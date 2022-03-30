@@ -1,0 +1,564 @@
+<ng-template #supplieForm let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{supplieSelected.id?'Actualizar insumo':'Registrar nuevo insumo'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeFormModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form">   
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Grupo</label>
+            <div class="input-group">
+              <ngx-select-dropdown 
+              [(ngModel)]="groupSelected" [ngModelOptions]="{standalone: true}"
+              (change)="selectionChanged($event,'grupo')" 
+              [multiple]="false" 
+              [config]="groupConfig" 
+              [options]="groups" 
+              ngDefaultControl 
+              class="w-100 h-100"
+              ></ngx-select-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Inventariable</label>
+            <div class="input-group">
+              <div class=" custom-control custom-radio mb-3">
+                <input 
+                (change)="radioCheck('inventariable',1)"
+                [checked]="supplieSelected.inventariado==1?true:false"
+                class="custom-control-input"
+                id="customRadio0"
+                name="custom-radio-0"
+                type="radio"
+                />
+                <label class="custom-control-label" for="customRadio0">
+                  Sí
+                </label>
+              </div>
+              <div class=" custom-control custom-radio mb-3">
+                <input 
+                (change)="radioCheck('inventariable',0)"
+                [checked]="supplieSelected.inventariado==0?true:false"
+                class="custom-control-input"
+                id="customRadio1"
+                name="custom-radio-0"
+                type="radio"
+                />
+                <label class="custom-control-label" for="customRadio1">
+                  No
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>   
+      <div class="row">
+        <div class="col-md-6">          
+          <div class="form-group">
+            <label class="form-control-label">Código interno</label>
+            <input
+            placeholder="Código interno"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieSelected.cod_interno" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-control-label">Se informa</label>
+          <div class="input-group">
+            <div class=" custom-control custom-radio mb-3">
+              <input 
+              (change)="radioCheck('informa',1)"
+              [checked]="supplieSelected.informar==1?true:false"
+              class="custom-control-input"
+              id="customRadio2"
+              name="custom-radio-1"
+              type="radio"
+              />
+              <label class="custom-control-label" for="customRadio2">
+                Sí
+              </label>
+            </div>
+            <div class=" custom-control custom-radio mb-3">
+              <input 
+              (change)="radioCheck('informa',0)"
+              [checked]="supplieSelected.informar==0?true:false"
+              class="custom-control-input"
+              id="customRadio3"
+              name="custom-radio-1"
+              type="radio"
+              />
+              <label class="custom-control-label" for="customRadio3">
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Código SAP</label>
+            <input
+            placeholder="Código SAP"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieSelected.cod_sap" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-control-label">Se compra</label>
+          <div class="input-group">
+            <div class=" custom-control custom-radio mb-3">
+              <input 
+              (change)="radioCheck('compra',1)"
+              [checked]="supplieSelected.comprar==1?true:false"
+              class="custom-control-input"
+              id="customRadio4"
+              name="custom-radio-2"
+              type="radio"
+              />
+              <label class="custom-control-label" for="customRadio4">
+                Sí
+              </label>
+            </div>
+            <div class=" custom-control custom-radio mb-3">
+              <input 
+              (change)="radioCheck('compra',0)"
+              [checked]="supplieSelected.comprar==0?true:false"
+              class="custom-control-input"
+              id="customRadio5"
+              name="custom-radio-2"
+              type="radio"
+              />
+              <label class="custom-control-label" for="customRadio5">
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-md-6">          
+          <div class="form-group">
+            <label class="form-control-label">Tamaño</label>
+            <input
+            placeholder="Tamaño"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieSelected.tamano" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div> 
+        </div>   
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Descripción</label>
+            <input
+            placeholder="Descripción"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieSelected.descriptions" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">      
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">En tránsito</label>
+            <input
+            placeholder="En tránsito"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieSelected.en_transito" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Subir Imagen</label>
+            <div class="avatar-upload">
+              <div class="avatar-edit">
+                  <input type="file" capture="environment" id="imageUpload" (change)="fileProgress($event,'supplie')"/>
+                  <label for="imageUpload"></label>
+                </div>
+                <div class="avatar-preview">
+                  <img 
+                    class="profile-user-img img-responsive img-circle" 
+                    id="imagePreview" 
+                    [src]="previewUrl?previewUrl:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" 
+                    alt="picture">
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      </form>
+    </div>
+    <div class=" modal-footer">
+      <button
+      class=" btn btn-primary new-event--add"
+      type="submit"
+      (click)="updateSupplie()"
+      >
+      {{supplieSelected.id?'Actualizar':'Registrar'}}
+    </button>
+    <button
+    (click)="closeFormModal()"
+    class=" btn btn-link ml-auto"
+    data-dismiss="modal"
+    type="button"
+    >
+    Cerrar
+  </button>
+</div>
+</ng-template>
+<ng-template #supplieVersionForm let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{supplieVersionSelected.id?'Actualizar versión de insumo':'Registrar nueva versión de insumo'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeFormModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form"> 
+      <div class="row">        
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-control-label">Insumo</label>
+            <div class="input-group">
+              <ngx-select-dropdown 
+              [(ngModel)]="supplieSelected" [ngModelOptions]="{standalone: true}"
+              (change)="selectionChanged($event,'supplie')" 
+              [multiple]="false" 
+              [config]="supplieConfig" 
+              [options]="supplies" 
+              [disabled]="selectDisabled" 
+              ngDefaultControl 
+              class="w-100 h-100"
+              ></ngx-select-dropdown>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">          
+          <div class="form-group">
+            <label class="form-control-label">Nombre</label>
+            <input
+            placeholder="Nombre"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieVersionSelected.nombre" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-control-label">Subir Imagen</label>
+            <div class="avatar-upload">
+              <div class="avatar-edit">
+                  <input type="file" capture="environment" id="imageUpload" (change)="fileProgress($event,'supplie-version')"/>
+                  <label for="imageUpload"></label>
+                </div>
+                <div class="avatar-preview">
+
+                  <img class="profile-user-img img-responsive img-circle" id="imagePreview" [src]="previewUrl?previewUrl:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </form>
+    </div>
+    <div class=" modal-footer">
+      <button
+      class=" btn btn-primary new-event--add"
+      type="submit"
+      (click)="updateSupplieVersion()"
+      >
+      {{supplieVersionSelected.id?'Actualizar':'Registrar'}}
+    </button>
+    <button
+    (click)="closeFormModal()"
+    class=" btn btn-link ml-auto"
+    data-dismiss="modal"
+    type="button"
+    >
+    Cerrar
+  </button>
+</div>
+</ng-template>
+
+<ng-template #purchaseOrderDetail let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Detalle de orden de compra</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closePurchaseOrderDetail()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col">ID</th>
+
+                <th class=" sort" data-sort="name" scope="col">Código SAP</th>
+
+                <th class=" sort" data-sort="budget" scope="col">Descripción</th>
+
+                <th class=" sort" data-sort="budget" scope="col">Cantidad OC</th>
+
+                <th class=" sort" data-sort="budget" scope="col">Fecha de documento</th>
+
+              </tr>
+            </thead>
+            <tbody class=" list">
+              <tr *ngFor="let purchaseOrderDetail of purchasesOrderDetail">
+                <td class=" budget">{{purchaseOrderDetail.id}}</td>
+
+                <td class=" budget">{{purchaseOrderDetail.supplie.cod_sap?purchaseOrderDetail.supplie.cod_sap:'Sin código SAP'}}</td>
+
+                <td class=" budget">{{purchaseOrderDetail.supplie.descriptions}}</td>
+
+                <td class=" budget">{{purchaseOrderDetail.cantidad_oc}}</td>
+
+                <td class=" budget">{{purchaseOrderDetail.docDate}}</td>
+              
+              </tr>
+            </tbody>
+    </table>
+  </div>
+    <button
+      (click)="closePurchaseOrderDetail()"
+      class=" btn btn-link ml-auto"
+      data-dismiss="modal"
+      type="button"
+    >
+    Ok
+  </button>
+  </div>
+</ng-template>
+<ng-template #reservationInvoiceDetail let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Detalle de factura reserva</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeReservationInvoiceDetail()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+
+                <th class=" sort" data-sort="name" scope="col">ID</th>
+
+                <th class=" sort" data-sort="name" scope="col">Código SAP</th>
+
+                <th class=" sort" data-sort="budget" scope="col">Descripción</th>
+
+                <th class=" sort" data-sort="budget" scope="col">Cantidad FR</th>
+
+                <th class=" sort" data-sort="budget" scope="col">Fecha de documento</th>
+              </tr>
+            </thead>
+            <tbody class=" list">
+              <tr *ngFor="let reserveInvoiceDetail of reservesInvoiceDetail">
+                <td class=" budget">{{reserveInvoiceDetail.id}}</td>
+
+                <td class=" budget">{{reserveInvoiceDetail.supplie.cod_sap?reserveInvoiceDetail.supplie.cod_sap:'Sin código SAP'}}</td>
+
+                <td class=" budget">{{reserveInvoiceDetail.supplie.descriptions}}</td>
+                
+                <td class=" budget">{{reserveInvoiceDetail.cantidad_fr}}</td>
+
+                <td class=" budget">{{reserveInvoiceDetail.docDate}}</td>
+              
+              </tr>
+            </tbody>
+    </table>
+  </div>
+    <button
+      (click)="closeReservationInvoiceDetail()"
+      class=" btn btn-link ml-auto"
+      data-dismiss="modal"
+      type="button"
+    >
+    Ok
+  </button>
+  </div>
+</ng-template>
+<div class="header pb-6">
+  <div class="container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">Compra de insumos</h6>
+          <nav
+            aria-label="breadcrumb"
+            class=" d-none d-md-inline-block ml-md-4"
+            >
+            <ol class=" breadcrumb breadcrumb-links">
+              <li class=" breadcrumb-item">
+                <a href="javascript:void(0)">  <i class="ni ni-bullet-list-67"> </i> </a>
+              </li>
+
+              <li class=" breadcrumb-item">
+                <a href="javascript:void(0)"> Insumos </a>
+              </li>
+
+              <li aria-current="page" class=" breadcrumb-item active">
+                Compra de insumos
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--6">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class="col"><h3 class=" mb-0">Lista de compras de insumos</h3></div>
+
+            <div class="col text-right">
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+
+              <!--<button class="btn btn-sm btn-primary" (click)="open(form)">
+                Crear nuevo
+              </button> -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar compra de insumos..." [(ngModel)]="searchTable">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('cod_interno')">Código interno</th>
+
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('cod_sap')">Código SAP</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('descriptions')">Descripción</th>
+
+                <th class=" sort" data-sort="budget" scope="col" >Versión de insumo</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('group')">Grupo</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('tamano')">Tamaño</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('stock')">Stock</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('cantidad_oc')">Cantidad OC</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('cantidad_fr')">Cantidad FR</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('a_comprar')">A comprar</th>
+
+              </tr>
+            </thead>
+            <tbody class=" list">
+              <tr *ngFor="let purchaseSupplie of ( purchaseSupplies | filterPurchaseSupplies:searchTable )   | paginate: { itemsPerPage: 5, currentPage: p } ">
+                <td class=" budget">
+                  {{purchaseSupplie.supplie.cod_interno}}
+                </td>
+                <td class=" budget">
+                  {{purchaseSupplie.supplie.cod_sap}}
+                </td>
+
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">
+                      <a href="javascript:void(0)" (click)="showSupplieForm(purchaseSupplie.supplie,supplieForm)">{{purchaseSupplie.supplie.descriptions}}</a>
+                      </span>
+                    </div>
+                  </div>
+                </th>
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">
+                      <a href="javascript:void(0)" (click)="showSupplieVersionForm(purchaseSupplie.supplie.version_insumos_id,supplieVersionForm)">{{purchaseSupplie.supplie.version_insumos_nombre}}</a>
+                      </span>
+                    </div>
+                  </div>
+                </th>
+
+                <td class=" budget">{{purchaseSupplie.supplie.group.descriptions}}</td>
+
+                <td class=" budget">{{purchaseSupplie.supplie.tamano}}</td>
+
+                <td class=" budget">{{purchaseSupplie.supplie.version_insumos_stock}}</td>
+
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">
+                      <a href="javascript:void(0)" (click)="showPurchaseOrderDetail(purchaseOrderDetail,purchaseSupplie.supplie)">{{purchaseSupplie.cantidad_oc}}</a>
+                      </span>
+                    </div>
+                  </div>
+                </th>
+
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">
+                      <a href="javascript:void(0)" (click)="showReservationInvoiceDetail(reservationInvoiceDetail,purchaseSupplie.supplie)">{{purchaseSupplie.cantidad_fr}}</a>
+                      </span>
+                    </div>
+                  </div>
+                </th>
+
+                <td class=" budget">{{purchaseSupplie.a_comprar}}</td>
+
+              </tr>
+            </tbody>
+    </table>
+  </div>
+        <div class="card-footer border-0">
+          <pagination-controls 
+              (pageChange)="p = $event" 
+              maxSize="5" 
+              responsive="true" 
+              previousLabel="Anterior"
+              nextLabel="Siguiente"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

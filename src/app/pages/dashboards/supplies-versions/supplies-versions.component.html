@@ -1,0 +1,239 @@
+<ng-template #formElement let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{supplieVersion.id?'Actualizar versión de insumo':'Registrar nueva versión de insumo'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeFormModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form"> 
+      <div class="row">        
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-control-label">Insumo</label>
+            <div class="input-group">
+              <ngx-select-dropdown 
+              [(ngModel)]="supplieSelected" [ngModelOptions]="{standalone: true}"
+              (change)="selectionChanged($event,'supplie')" 
+              [multiple]="false" 
+              [config]="supplieConfig" 
+              [options]="supplies" 
+              [disabled]="selectDisabled" 
+              ngDefaultControl 
+              class="w-100 h-100"
+              ></ngx-select-dropdown>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">          
+          <div class="form-group">
+            <label class="form-control-label">Nombre</label>
+            <input
+            placeholder="Nombre"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieVersion.nombre" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-control-label">Subir Imagen</label>
+            <div class="avatar-upload">
+              <div class="avatar-edit">
+                  <input type="file" capture="environment" id="imageUpload" (change)="fileProgress($event)"/>
+                  <label for="imageUpload"></label>
+                </div>
+                <div class="avatar-preview">
+
+                  <img class="profile-user-img img-responsive img-circle" id="imagePreview" [src]="previewUrl?previewUrl:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </form>
+    </div>
+    <div class=" modal-footer">
+      <button
+      class=" btn btn-primary new-event--add"
+      type="submit"
+      (click)="register()"
+      >
+      {{supplieVersion.id?'Actualizar':'Registrar'}}
+    </button>
+    <button
+    (click)="closeFormModal()"
+    class=" btn btn-link ml-auto"
+    data-dismiss="modal"
+    type="button"
+    >
+    Cerrar
+  </button>
+</div>
+</ng-template>
+<ng-template #img let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Imagen</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <img
+        alt="Image placeholder"
+        style="width: 100%;height: 100%;"
+        [src]="supplieVersionImagen"
+      />
+    </div>
+  </div>
+  <div class=" modal-footer">
+    <button
+    (click)="modal.dismiss('Cross click')"
+    class=" btn btn-link ml-auto"
+    data-dismiss="modal"
+    type="button"
+    >
+    Cerrar
+  </button>
+</div>
+</ng-template>
+<div class=" header pb-6">
+  <div class=" container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">Versión de insumos</h6>
+
+          <nav
+          aria-label="breadcrumb"
+          class=" d-none d-md-inline-block ml-md-4"
+          >
+          <ol class=" breadcrumb breadcrumb-links">
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)">  <i class="ni ni-bullet-list-67"> </i> </a>
+            </li>
+
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> Insumos </a>
+            </li>
+
+            <li aria-current="page" class=" breadcrumb-item active">
+              Versión de insumos
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="container-fluid mt--6">
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class=" col"><h3 class=" mb-0">Lista de versiones de insumos</h3></div>
+
+            <div class="col text-right">
+              <button class="btn btn-sm btn-primary" (click)="open(formElement)">
+                Crear nuevo
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar Insumo..." [(ngModel)]="searchTable">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('name')">Nombre</th>
+                <th class=" sort" data-sort="name" scope="col" >Imagen</th>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('supplie')">Insumo</th>
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+
+            <tbody class=" list">
+              <tr *ngFor="let supplieVersion of ( suppliesVersions | filterSupplieVersion: searchTable ) | paginate: { itemsPerPage: 5, currentPage: p } ">
+
+
+              <td class=" budget">{{supplieVersion.nombre}}</td>
+
+
+                <th scope="row">
+                  <div class=" media align-items-center">
+                    <a
+                    class=" avatar rounded-circle mr-3"
+                    href="javascript:void(0)"
+                    (click)="openImage(img,supplieVersion.imagen)"
+                    >
+                    <img
+                    alt="Image placeholder"
+                    style="width: 100%;height: 100%;"
+                    [src]="supplieVersion.imagen?supplieVersion.imagen:'assets/img/theme/bootstrap.jpg'"
+                    />
+                  </a>
+                </div>
+              </th>
+
+              <td class=" budget">{{supplieVersion.insumo.descriptions}}</td>
+
+              <td class=" text-right">
+                <div dropdown class="dropdown no-caret">
+                  <a
+                  id="button-basic"
+                  dropdownToggle
+                  role="button"
+                  class="btn btn-sm btn-icon-only text-light dropdown-toggle"
+                  aria-controls="dropdown-basic"
+                  >
+                  <i class=" fas fa-ellipsis-v"> </i>
+                </a>
+
+                <div
+                class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                style="position: relative;z-index:10;"
+                *dropdownMenu
+                >
+                <button class="dropdown-item" (click)="edit(supplieVersion,formElement)">
+                  Editar
+                </button>
+                <button class="dropdown-item" (click)="delete(supplieVersion.id)">
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer border-0">
+               <pagination-controls 
+        (pageChange)="p = $event" 
+        maxSize="5" 
+        responsive="true" 
+        previousLabel="Anterior"
+        nextLabel="Siguiente"></pagination-controls>
+        </div>
+</div>
+</div>
+</div>
+</div>

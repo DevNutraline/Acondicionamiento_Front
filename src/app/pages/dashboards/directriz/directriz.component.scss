@@ -1,0 +1,121 @@
+.profile-user-img{
+	border-radius: 100%;
+    width: 125px;
+    height: 125px;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+}
+.copyright{
+    font-size: 14px;
+    span{
+        font-size: 14px;
+        color: #524343;
+    }
+}
+.text-center{
+    text-align: center;
+    .big-avatar{
+        width: 100px;
+        height: 100px;
+    }
+}
+.avatar-upload {
+    position: relative;
+    max-width: 205px;
+    margin: auto;
+    margin-bottom: 20px;
+  
+    .avatar-edit {
+    	position: absolute;
+	   right: 70px;
+	   z-index: 1;
+	   top: 0px;
+        input {
+            display: none;
+            + label {
+                display: inline-block;
+                width: 34px;
+                height: 34px;
+                margin-bottom: 0;
+                border-radius: 100%;
+                background: #FFFFFF;
+                border: 1px solid #d2d6de;
+                box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+                cursor: pointer;
+                font-weight: normal;
+                transition: all .2s ease-in-out;
+                &:hover {
+                    background: #f1f1f1;
+                    border-color: #d6d6d6;
+                }
+                &:after {
+                    content: "+";
+                    font-family: 'FontAwesome';
+                    color: #337AB7;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    text-align: center;
+                    line-height: 34px;
+                    margin: auto;
+                }
+            }
+        }
+    }
+}
+.custom-radio{
+	width: 50%;
+}
+.image-gallery-container{
+    left: 0;
+    top: 0;
+    position: fixed;
+    z-index: 10000;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1f1f1f66; /* Green background with 30% opacity */
+}
+.close-gallery{ 
+    display: flex;
+    top: 50px;
+    right: 50px;
+    position: absolute;
+}
+.close-gallery button{ 
+    z-index: 1; 
+    border: none;  
+    padding: 10px;
+    background-color: #ff010157;
+}
+.arrows {
+    display: flex;
+    justify-content: space-between;
+    height: max-content;
+    position: absolute;
+    width: 90%;
+}
+
+.arrows button{
+    background-color: rgba(255, 255, 255, .25);
+    color: #1C1D21;
+    cursor: pointer;
+    height: max-content;
+    padding: 15px;
+    border: none;
+    transition: background-color .5s, color .5s;
+}
+
+.arrows button:first-of-type{ 
+    padding-right: 20px;
+}
+
+.arrows button:last-of-type{ 
+    padding-left: 20px;
+}
+
+.arrows button:hover{
+    background-color: rgba(28,29,33, .75);
+    color: #EEEFF7;
+}

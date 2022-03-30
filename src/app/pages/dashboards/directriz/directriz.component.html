@@ -1,0 +1,954 @@
+<ng-template #supplieVersionForm let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{supplieVersionSelected.id?'Actualizar versión de insumo':'Registrar nueva versión de insumo'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeFormModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form"> 
+      <div class="row">        
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-control-label">Insumo</label>
+            <div class="input-group">
+              <ngx-select-dropdown 
+              [(ngModel)]="supplieSelected" [ngModelOptions]="{standalone: true}"
+              (change)="selectionChanged($event,'supplie')" 
+              [multiple]="false" 
+              [config]="supplieConfig" 
+              [options]="supplies" 
+              [disabled]="selectDisabled" 
+              ngDefaultControl 
+              class="w-100 h-100"
+              ></ngx-select-dropdown>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">          
+          <div class="form-group">
+            <label class="form-control-label">Nombre</label>
+            <input
+            placeholder="Nombre"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieVersionSelected.nombre" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-control-label">Subir Imagen</label>
+            <div class="avatar-upload">
+              <div class="avatar-edit">
+                <input type="file" capture="environment" id="imageUpload" (change)="fileProgress($event,'supplie-version')"/>
+                <label for="imageUpload"></label>
+              </div>
+              <div class="avatar-preview">
+                <img class="profile-user-img img-responsive img-circle" id="imagePreview" [src]="previewUrl?previewUrl:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class=" modal-footer">
+    <div class="d-flex w-100">
+      <div class="mr-auto">
+        <button
+          (click)="closeFormModal()"
+          class=" btn btn-link"
+          data-dismiss="modal"
+          type="button"
+        >
+          Cerrar
+        </button>
+      </div>
+      <div class="ml-auto">
+        <button
+          class=" btn btn-primary new-event--add"
+          type="submit"
+          (click)="updateSupplieVersion()"
+        >
+          {{supplieVersionSelected.id?'Actualizar':'Registrar'}}
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #supplieForm let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{supplieSelected.id?'Actualizar insumo':'Registrar nuevo insumo'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeFormModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form">   
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Grupo</label>
+            <div class="input-group">
+              <ngx-select-dropdown 
+              [(ngModel)]="groupSelected" [ngModelOptions]="{standalone: true}"
+              (change)="selectionChanged($event,'grupo')" 
+              [multiple]="false" 
+              [config]="groupConfig" 
+              [options]="groups" 
+              ngDefaultControl 
+              class="w-100 h-100"
+              ></ngx-select-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Inventariable</label>
+            <div class="input-group">
+              <div class=" custom-control custom-radio mb-3">
+                <input 
+                (change)="radioCheck('inventariable',1)"
+                [checked]="supplieSelected.inventariado==1?true:false"
+                class="custom-control-input"
+                id="customRadio0"
+                name="custom-radio-0"
+                type="radio"
+                />
+                <label class="custom-control-label" for="customRadio0">
+                  Sí
+                </label>
+              </div>
+              <div class=" custom-control custom-radio mb-3">
+                <input 
+                (change)="radioCheck('inventariable',0)"
+                [checked]="supplieSelected.inventariado==0?true:false"
+                class="custom-control-input"
+                id="customRadio1"
+                name="custom-radio-0"
+                type="radio"
+                />
+                <label class="custom-control-label" for="customRadio1">
+                  No
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>   
+      <div class="row">
+        <div class="col-md-6">          
+          <div class="form-group">
+            <label class="form-control-label">Código interno</label>
+            <input
+            placeholder="Código interno"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieSelected.cod_interno" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-control-label">Se informa</label>
+          <div class="input-group">
+            <div class=" custom-control custom-radio mb-3">
+              <input 
+              (change)="radioCheck('informa',1)"
+              [checked]="supplieSelected.informar==1?true:false"
+              class="custom-control-input"
+              id="customRadio2"
+              name="custom-radio-1"
+              type="radio"
+              />
+              <label class="custom-control-label" for="customRadio2">
+                Sí
+              </label>
+            </div>
+            <div class=" custom-control custom-radio mb-3">
+              <input 
+              (change)="radioCheck('informa',0)"
+              [checked]="supplieSelected.informar==0?true:false"
+              class="custom-control-input"
+              id="customRadio3"
+              name="custom-radio-1"
+              type="radio"
+              />
+              <label class="custom-control-label" for="customRadio3">
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Código SAP</label>
+            <input
+            placeholder="Código SAP"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieSelected.cod_sap" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-control-label">Se compra</label>
+          <div class="input-group">
+            <div class=" custom-control custom-radio mb-3">
+              <input 
+              (change)="radioCheck('compra',1)"
+              [checked]="supplieSelected.comprar==1?true:false"
+              class="custom-control-input"
+              id="customRadio4"
+              name="custom-radio-2"
+              type="radio"
+              />
+              <label class="custom-control-label" for="customRadio4">
+                Sí
+              </label>
+            </div>
+            <div class=" custom-control custom-radio mb-3">
+              <input 
+              (change)="radioCheck('compra',0)"
+              [checked]="supplieSelected.comprar==0?true:false"
+              class="custom-control-input"
+              id="customRadio5"
+              name="custom-radio-2"
+              type="radio"
+              />
+              <label class="custom-control-label" for="customRadio5">
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-md-6">          
+          <div class="form-group">
+            <label class="form-control-label">Tamaño</label>
+            <input
+            placeholder="Tamaño"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieSelected.tamano" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div> 
+        </div>   
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Descripción</label>
+            <input
+            placeholder="Descripción"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieSelected.descriptions" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">      
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">En tránsito</label>
+            <input
+            placeholder="En tránsito"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieSelected.en_transito" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Subir Imagen</label>
+            <div class="avatar-upload">
+              <div class="avatar-edit">
+                  <input type="file" capture="environment" id="imageUpload" (change)="fileProgress($event, 'supplie')"/>
+                  <label for="imageUpload"></label>
+                </div>
+                <div class="avatar-preview">
+                  <img 
+                    class="profile-user-img img-responsive img-circle" 
+                    id="imagePreview" 
+                    [src]="previewUrl?previewUrl:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" 
+                    alt="picture">
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </form>
+  </div>
+  <div class=" modal-footer">
+    <div class="d-flex w-100">
+      <div class="ml-auto">
+        <button
+          (click)="closeFormModal()"
+          class=" btn btn-link "
+          data-dismiss="modal"
+          type="button"
+        >
+          Cerrar
+        </button>
+      </div>
+      <div class="mr-auto">        
+        <button
+          class=" btn btn-primary new-event--add"
+          type="submit"
+          (click)="updateSupplie()"
+          >
+          {{supplieSelected.id?'Actualizar':'Registrar'}}
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #form let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{directriz.id?'Actualizar directriz':'Registrar nueva directriz'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeFormModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form">   
+      <div class="row">
+        <div class="col-md-12">          
+          <div class="form-group">
+            <label class="form-control-label">Directriz</label>
+            <input
+              placeholder="Directriz"
+              class="form-control form-control-alternative new-event--title"
+              type="text"
+              [(ngModel)]="directriz.detalle" 
+              [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6"><div class="form-group">
+            <label class="form-control-label">Genérico/Específico</label>
+            <div class="input-group">
+              <ngx-select-dropdown 
+              [(ngModel)]="genericSelected" [ngModelOptions]="{standalone: true}"
+              (change)="selectionChanged($event,'generico_especifico')" 
+              [multiple]="false" 
+              [config]="genericConfig" 
+              [options]="generics" 
+              ngDefaultControl 
+              class="w-100 h-100"
+              ></ngx-select-dropdown>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="genericSelected">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Insumo</label>
+            <div class="input-group">
+              <ngx-select-dropdown 
+              [(ngModel)]="supplieSelected" [ngModelOptions]="{standalone: true}"
+              (change)="selectionChanged($event,'insumo')" 
+              [multiple]="false" 
+              [config]="supplieConfig" 
+              [options]="supplies" 
+              ngDefaultControl 
+              class="w-100 h-100"
+              ></ngx-select-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Versión de insumo</label>
+            <div class="input-group">
+              <ngx-select-dropdown
+              [(ngModel)]="suppliesVersionsSelected" [ngModelOptions]="{standalone: true}"
+              (change)="selectionChanged($event,'version_insumo')" 
+              [multiple]="false" 
+              [config]="versionInsumoConfig" 
+              [options]="suppliesVersions" 
+              [disabled]="disabledVersionSelect"
+              ngDefaultControl 
+              class="w-100 h-100"
+              ></ngx-select-dropdown>
+            </div>
+          </div>
+        </div>
+      </div> 
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-control-label">Subir Imagen</label>
+            <div class="avatar-upload">
+              <div class="avatar-edit">
+                <input type="file"  capture="environment" id="imageUpload" (change)="fileProgress($event,'directriz-image')">
+                <label for="imageUpload"></label>
+              </div>
+              <div class="avatar-preview">
+                <img class="profile-user-img img-responsive img-circle" id="imagePreview" [src]="previewUrl?previewUrl:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class=" modal-footer">
+    <div class="d-flex w-100">
+      <div class="mr-auto">
+        <button
+         (click)="closeFormModal()"
+         class=" btn btn-link "
+         data-dismiss="modal"
+         type="button"
+        >
+          Cerrar
+        </button>
+      </div>
+      <div class="ml-auto">        
+        <button
+          class=" btn btn-primary new-event--add"
+          type="submit"
+          (click)="register()"
+        >
+          {{directriz.id?'Actualizar':'Registrar'}}
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #img let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Imagen: {{imageName?imageName:'Imagen sin nombre'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeFormModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <ngx-gallery
+        [options]="galleryOptions"
+        [images]="galleryPhotos" 
+        (change)="changeEvent($event)"
+        class="ngx-gallery">
+      </ngx-gallery>
+    </div>
+  </div>
+  <div class=" modal-footer">
+    <div class="d-flex w-100">
+      <div class="mr-auto">
+        <button
+        (click)="closeFormModal()"
+        class=" btn btn-link "
+        data-dismiss="modal"
+        type="button"
+        >
+        Cerrar
+      </button>
+      </div>
+    </div>
+    
+  </div>
+</ng-template>
+<ng-template #note let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Información nota de venta.</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeFormModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form  #noteForm="ngForm" class="new-event--form">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Foto original</label>
+            <div class="avatar-upload">
+              <div class="avatar-edit">
+                <input type="file" capture="environment" id="imageOriginal" (change)="fileProgress($event,'foto-original')"/>
+                <label for="imageOriginal"></label>
+              </div>
+              <div class="avatar-preview">
+                <img class="profile-user-img img-responsive img-circle" id="imagePreview" [src]="previewOriginalUrl?previewOriginalUrl:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Foto del rotulado</label>
+            <div class="avatar-upload">
+              <div class="avatar-edit">
+                <input type="file" capture="environment" id="imageRotulado" (change)="fileProgress($event,'foto-rotulado')"/>
+                <label for="imageRotulado"></label>
+              </div>
+              <div class="avatar-preview">
+                <img class="profile-user-img img-responsive img-circle" id="imagePreview" [src]="previewLabeledUrl?previewLabeledUrl:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-control-label">Nota</label>
+              <input
+                placeholder="Nota"
+                class="form-control form-control-alternative new-event--title"
+                type="text"
+                [(ngModel)]="purchaseNote.note" 
+                [ngModelOptions]="{standalone: true}"
+                />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class=" modal-footer">
+    <button
+      class=" btn btn-primary new-event--add"
+      type="submit"
+      (click)="registerPurchaseNote()"
+      >Registrar</button>
+    <button
+      (click)="closeFormModal()"
+      class=" btn btn-link ml-auto"
+      data-dismiss="modal"
+      type="button"
+      >Cerrar
+    </button>
+  </div>
+</ng-template>
+<div class=" header pb-6">
+  <div class=" container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">Acondicionamientos de productos</h6>
+          <nav
+            aria-label="breadcrumb"
+            class=" d-none d-md-inline-block ml-md-4"
+            >
+            <ol class=" breadcrumb breadcrumb-links">
+              <li class=" breadcrumb-item">
+                <a href="javascript:void(0)"> <i class=" ni ni-archive-2 "> </i> </a>
+              </li>
+              <li class=" breadcrumb-item">
+                <a href="javascript:void(0)"> Acondicionamiento </a>
+              </li>
+              <li aria-current="page" class=" breadcrumb-item active">
+                Acondicionamientos de productos
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- gallery -->
+<!-- <div *ngIf="imageGallerySelected.src" class="image-gallery-container">
+  <div class="close-gallery">
+    <button 
+      (click)="closeGalleryImage()">
+      <i 
+        class="fa fa-times fa-2x" 
+        aria-hidden="true" 
+        >
+      </i>
+    </button>
+  </div>
+  <div>    
+      <lib-ngx-image-zoom
+        [thumbImage]="imageGallerySelected.src"
+        [fullImage]="imageGallerySelected.src"
+        [zoomMode]="'hover'"
+        [enableScrollZoom]="true"
+      ></lib-ngx-image-zoom>
+  </div>
+  <div class="arrows">
+    <button 
+      [disabled]="imageGallerySelected.index==0" 
+      (click)="changeGalleryImage(imageGallerySelected.index,'prev')">
+      <i 
+        class="fa fa-chevron-left fa-2x" 
+        aria-hidden="true" 
+        >
+      </i>
+    </button>
+    <button
+      [disabled]="imageGallerySelected.index==9" 
+      (click)="changeGalleryImage(imageGallerySelected.index,'next')">
+      <i
+        class="fa fa-chevron-right fa-2x" 
+        aria-hidden="true" 
+        >
+      </i>
+    </button>
+  </div>
+</div> -->
+<div class="container-fluid mt--6">
+  <div class="row">
+    <div  class="col-md-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class="col"><h3 class=" mb-0">Detalles del producto</h3></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="checklist-info">
+                <div class="copyright text-xl-left text-muted"> 
+                  <div>Código SAP:</div>
+                  <span class="ml-1" style="color: #000;">{{product.cod_sap}}</span>
+                </div>
+              </div>
+              <br>
+              <div class="checklist-info">
+                <div class="copyright text-xl-left text-muted"> 
+                  <div>Producto tipo OVA:</div>
+                  <span *ngIf="product.ova_product_type!=undefined" class="ml-1"  style="color: #000;"> {{product.ova_product_type?product.ova_product_type.name:'Sin producto tipo OVA'}} </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="checklist-info">
+                <div class="copyright text-xl-left text-muted"> 
+                  <div>Descripción:</div>
+                  <span class="ml-1" style="color: #000;">{{product.descriptions}}</span>
+                </div>
+              </div>
+              <br>
+              <div class="checklist-info">
+                <div class="copyright text-xl-left text-muted"> 
+                  <div>Nombre de la versión:</div>
+                  <span class="ml-1" style="color: #000;"> {{versionProduct.name}} </span>
+                </div>
+              </div>              
+            </div>
+            <div class="col-md-3">
+              <div class="checklist-info">
+                <div class="copyright text-xl-left text-muted"> 
+                  <div>Tipo proceso OVA:</div>
+                  <span *ngIf="product.ova_process_type!=undefined" class="ml-1"  style="color: #000;">{{product.ova_process_type?product.ova_process_type.name:'Sin tipo proceso OVA registrado'}}</span>
+                </div>
+              </div>              
+            </div>
+            <div class="col-md-3">
+              <div class="checklist-info">
+                <div class="copyright text-xl-left text-muted"> 
+                  <div>Marca:</div>
+                  <span *ngIf="product.product_brand!=undefined" class="ml-1"  style="color: #000;">{{product.product_brand.name}}</span>
+                </div>
+              </div>              
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-3">
+              <label class="form-control-label">Cara principal</label>
+              <div class="text-center">
+                <!-- (click)="showGallery(0)" -->
+                  <!--<a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openGalleryImage(0,versionProduct.imagenMainFace)" tooltip="Cara principal"> -->
+                  <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenMainFace,'Cara principal')" tooltip="Cara principal"> 
+                  <img alt="imagenMainFace" style="width: 100%;height: 100%;" [src]="versionProduct.imagenMainFace?versionProduct.imagenMainFace:'https://www.tibs.org.tw/images/default.jpg'"/>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-control-label">Información Nutricional 1</label>
+              <div class="text-center">
+
+                <!-- <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openGalleryImage(1,versionProduct.imagenNutritionalInformation1)" tooltip="Información Nutricional 1"> -->
+                  <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenNutritionalInformation1,'Información Nutricional 1')" tooltip="Información Nutricional 1">
+                  <img alt="imagenNutritionalInformation1" style="width: 100%;height: 100%;" [src]="versionProduct.imagenNutritionalInformation1?versionProduct.imagenNutritionalInformation1:'https://www.tibs.org.tw/images/default.jpg'"/>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-control-label">Información Nutricional 2</label>
+              <div class="text-center">
+
+                <!-- <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openGalleryImage(2,versionProduct.imagenNutritionalInformation2)" tooltip="Información Nutricional 2"> -->
+                  <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenNutritionalInformation2,'Información Nutricional 2')" tooltip="Información Nutricional 2"> 
+                  <img alt="imagenNutritionalInformation2" style="width: 100%;height: 100%;" [src]="versionProduct.imagenNutritionalInformation2?versionProduct.imagenNutritionalInformation2:'https://www.tibs.org.tw/images/default.jpg'"/>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-control-label">Claims y Marketing 1</label>
+              <div class="text-center">
+
+                <!-- <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openGalleryImage(3,versionProduct.imagenClaimsYMarketing1)" tooltip="Claims y Marketing 1"> -->
+                  <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenClaimsYMarketing1,'Claims y Marketing 1')" tooltip="Claims y Marketing 1">
+
+                  <img alt="imagenClaimsYMarketing1" style="width: 100%;height: 100%;" [src]="versionProduct.imagenClaimsYMarketing1?versionProduct.imagenClaimsYMarketing1:'https://www.tibs.org.tw/images/default.jpg'"/>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-control-label">Claims y Marketing 2</label>
+              <div class="text-center">
+
+                <!-- <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openGalleryImage(4,versionProduct.imagenClaimsYMarketing2)" tooltip="Claims y Marketing 2"> -->
+                  <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenClaimsYMarketing2,'Claims y Marketing 2')" tooltip="Claims y Marketing 2">
+                  <img alt="imagenClaimsYMarketing2" style="width: 100%;height: 100%;" [src]="versionProduct.imagenClaimsYMarketing2?versionProduct.imagenClaimsYMarketing2:'https://www.tibs.org.tw/images/default.jpg'"/>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-control-label">Versión del producto</label>
+              <div class="text-center">
+                <!-- <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openGalleryImage(5,versionProduct.imagenProductVersion)" tooltip="Versión del producto"> -->
+                <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenProductVersion,'Versión del producto')" tooltip="Versión del producto">
+                <img alt="imagenProductVersion" style="width: 100%;height: 100%;" [src]="versionProduct.imagenProductVersion?versionProduct.imagenProductVersion:'https://www.tibs.org.tw/images/default.jpg'"/>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-control-label">EAN13</label>
+              <div class="text-center">
+                <!-- <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openGalleryImage(6,versionProduct.imagenEAN13)" tooltip="EAN13"> -->
+                  <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenEAN13,'EAN13')" tooltip="EAN13">
+                  <img alt="imagenEAN13" style="width: 100%;height: 100%;" [src]="versionProduct.imagenEAN13?versionProduct.imagenEAN13:'https://www.tibs.org.tw/images/default.jpg'"/>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-control-label">Adicional 1</label>
+              <div class="text-center">
+                <!-- <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openGalleryImage(7,versionProduct.imagenAditional1)" tooltip="Adicional 1"> -->
+                  <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenAditional1,'Adicional 1')" tooltip="Adicional 1">
+                  <img alt="imagenAditional1" style="width: 100%;height: 100%;" [src]="versionProduct.imagenAditional1?versionProduct.imagenAditional1:'https://www.tibs.org.tw/images/default.jpg'"/>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-control-label">Adicional 2</label>
+              <div class="text-center">
+                <!-- <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openGalleryImage(8,versionProduct.imagenAditional2)" tooltip="Adicional 2"> -->
+                  <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenAditional2,'Adicional 2')" tooltip="Adicional 2">
+                  <img alt="imagenAditional2" style="width: 100%;height: 100%;" [src]="versionProduct.imagenAditional2?versionProduct.imagenAditional2:'https://www.tibs.org.tw/images/default.jpg'"/>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-control-label">Adicional 3</label>
+              <div class="text-center">
+                <!-- <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openGalleryImage(9,versionProduct.imagenAditional3)" tooltip="Adicional 3"> -->
+                  <a class=" avatar big-avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenAditional3,'Adicional 3')" tooltip="Adicional 3">
+                  <img alt="imagenAditional3" style="width: 100%;height: 100%;" [src]="versionProduct.imagenAditional3?versionProduct.imagenAditional3:'https://www.tibs.org.tw/images/default.jpg'"/>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class=" row align-items-center" style="margin-bottom: 10px;">
+            <div class=" col"><h3 class=" mb-0">Lista de acondicionamientos</h3></div>
+
+            <div class="col text-right">
+              <button class="btn btn-sm btn-primary" (click)="open(form)">
+                Crear nuevo
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="open(note)">
+                Inf nota de venta 
+              </button>              
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar acondicionamiento..." [(ngModel)]="searchTable">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('insumo')">Insumo</th>
+                <!-- <th class=" sort" data-sort="name" scope="col" >Imagen versión de insumo</th> -->
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('insumo_version')">Versión de insumo</th>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('detalle')">Directriz</th>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('image')">Imagen</th>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('version_product')">Versión de producto</th>
+
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+
+            <tbody class=" list">
+              <tr *ngFor="let directriz of  ( directrizs | filterDirectriz: searchTable ) | paginate: { itemsPerPage: 5, currentPage: p } ">
+                <th scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        <span class="name mb-0 text-sm">
+                        <a href="javascript:void(0)" (click)="showSupplieForm(directriz.insumo,supplieForm)">{{directriz.insumo?directriz.insumo.descriptions:'Sin insumo registrado'}}</a>
+                        </span>
+                      </div>
+                    </div>
+                </th>
+                <th scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        <span class="name mb-0 text-sm">
+                        <a href="javascript:void(0)" (click)="showSupplieVersionForm(directriz.version_insumo,supplieVersionForm)">{{directriz.version_insumo?directriz.version_insumo.nombre:'Sin versión de insumo'}}</a>
+                        </span>
+                      </div>
+                    </div>
+                  </th>
+                <td class="budget">{{directriz.detalle}}</td>              
+                <td>
+                  <div class=" avatar-group">
+                    <a class=" avatar avatar-sm rounded-circle" tooltip="Imagen" placement="top" href="javascript:void(0)" (click)="openImage(img,directriz.image)">
+                      <img style="width: 100%;height: 100%;" alt="Imagen" [src]="directriz.image?directriz.image:'https://www.tibs.org.tw/images/default.jpg'" class="directriz-image"/>
+                    </a>
+                  </div>
+                </td>
+
+                <td class=" budget">{{directriz.version_product?directriz.version_product.name:'Sin versión de producto'}}</td>
+
+                <td class=" text-right">
+                  <div dropdown class="dropdown no-caret">
+                    <a
+                      id="button-basic"
+                      dropdownToggle
+                      role="button"
+                      class="btn btn-sm btn-icon-only text-light dropdown-toggle"
+                      aria-controls="dropdown-basic"
+                      >
+                      <i class=" fas fa-ellipsis-v"> </i>
+                    </a>
+
+                    <div
+                      class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                      style="position: relative;z-index:10;"
+                      *dropdownMenu
+                      >
+                      <button class="dropdown-item" (click)="edit(directriz,form)">
+                        Editar
+                      </button>
+                      <button class="dropdown-item" (click)="delete(directriz.id)">
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer border-0">
+          <pagination-controls 
+          (pageChange)="p = $event" 
+          maxSize="5" 
+          responsive="true" 
+          previousLabel="Anterior"
+          nextLabel="Siguiente"></pagination-controls>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header border-0">
+              <div class=" row align-items-center" style="margin-bottom: 10px;">
+                <div class=" col"><h3 class=" mb-0">Información nota de venta</h3></div>
+              </div>
+            </div>
+            <div class=" table-responsive">
+              <table class=" table align-items-center table-flush">
+                <thead class=" thead-light">
+                  <tr>
+                    <th class=" sort" data-sort="name" scope="col">Foto original</th>
+                    <th class=" sort" data-sort="name" scope="col">Foto del rotulado</th>
+                    <th class=" sort" data-sort="name" scope="col">Nota</th>
+                    <th scope="col">Acción</th>
+                  </tr>
+                </thead>
+                <tbody class=" list">
+                  <tr *ngFor="let purchaseNote of purchasesNotes">
+                    <td>
+                      <div class=" avatar-group">
+                        <a class=" avatar avatar-sm rounded-circle" tooltip="Imagen" placement="top" href="javascript:void(0)" (click)="openImage(img,purchaseNote.original)">
+                          <img style="width: 100%;height: 100%;" alt="Imagen" [src]="purchaseNote.original" class="directriz-image"/>
+                        </a>
+                      </div>
+                    </td>
+                    <td>
+                      <div class=" avatar-group">
+                        <a class=" avatar avatar-sm rounded-circle" tooltip="Imagen" placement="top" href="javascript:void(0)" (click)="openImage(img,purchaseNote.labeled)">
+                          <img style="width: 100%;height: 100%;" alt="Imagen" [src]="purchaseNote.labeled" class="directriz-image"/>
+                        </a>
+                      </div>
+                    </td>
+                    <td class="budget">{{purchaseNote.note?purchaseNote.note:'Sin nota registrada'}}</td>
+
+
+                    <td class=" text-right">
+                      <div dropdown class="dropdown no-caret">
+                        <a
+                        id="button-basic"
+                        dropdownToggle
+                        role="button"
+                        class="btn btn-sm btn-icon-only text-light dropdown-toggle"
+                        aria-controls="dropdown-basic"
+                        >
+                            <i class=" fas fa-ellipsis-v"> </i>
+                          </a>
+                        <div
+                          class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                          style="position: relative;z-index:10;"
+                          *dropdownMenu
+                          >
+                          <button class="dropdown-item" (click)="editPurchaseNote(purchaseNote,note)">
+                            Editar
+                          </button>
+                          <button class="dropdown-item" (click)="deletePurchaseNote(purchaseNote.id)">
+                            Eliminar
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  
+</div>

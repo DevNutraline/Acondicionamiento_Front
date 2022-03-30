@@ -1,0 +1,426 @@
+<ng-template #form let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{product.id?'Actualizar producto':'Registrar nuevo producto'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form">   
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-control-label">Código SAP</label>
+              <input
+              placeholder="Nombre"
+              class="form-control form-control-alternative new-event--title"
+              type="text"
+              [(ngModel)]="product.cod_sap" 
+              [ngModelOptions]="{standalone: true}"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-control-label">Descripción</label>
+              <input
+              placeholder="Descripción"
+              class="form-control form-control-alternative new-event--title"
+              type="text"
+              [(ngModel)]="product.descriptions" 
+              [ngModelOptions]="{standalone: true}"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-control-label">Código golden</label>
+              <input
+              placeholder="Código golden"
+              class="form-control form-control-alternative new-event--title"
+              type="text"
+              [(ngModel)]="product.codgf" 
+              [ngModelOptions]="{standalone: true}"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-control-label">Marca de producto</label>
+              <div class="input-group">
+                <ngx-select-dropdown 
+                [(ngModel)]="productBrandSelected" [ngModelOptions]="{standalone: true}"
+                (change)="selectionChanged($event,'product_brand')" 
+                [multiple]="false" 
+                [config]="productBrandConfig" 
+                [options]="productBrands" 
+                ngDefaultControl 
+                class="w-100 h-100"
+                ></ngx-select-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-control-label">Tipo proceso OVA</label>
+              <div class="input-group">
+                <ngx-select-dropdown 
+                [(ngModel)]="ovaProcessTypeSelected" [ngModelOptions]="{standalone: true}"
+                (change)="selectionChanged($event,'ova_process_type')" 
+                [multiple]="false" 
+                [config]="ovaProcessTypeConfig" 
+                [options]="ovaProcessTypes" 
+                ngDefaultControl 
+                class="w-100 h-100"
+                ></ngx-select-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-control-label">Producto tipo ova</label>
+              <div class="input-group">
+                <ngx-select-dropdown 
+                [(ngModel)]="productTypeOvaSelected" [ngModelOptions]="{standalone: true}"
+                (change)="selectionChanged($event,'product_type_ova')" 
+                [multiple]="false" 
+                [config]="productTypeOvaConfig" 
+                [options]="productTypeOvas" 
+                ngDefaultControl 
+                class="w-100 h-100"
+                ></ngx-select-dropdown>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class=" modal-footer">
+      <div class="d-flex w-100">
+        <div class="mr-auto">
+          <button
+            (click)="modal.dismiss('Cross click')"
+            class=" btn btn-link"
+            data-dismiss="modal"
+            type="button"
+            >
+            Cerrar
+          </button>
+        </div>
+        <div class="ml-auto">
+          <button
+            class=" btn btn-primary new-event--add"
+            type="submit"
+            (click)="register()"
+            >
+            {{product.id?'Actualizar':'Registrar'}}
+          </button>
+        </div>
+      </div>
+    </div>
+</ng-template>
+<ng-template #img let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Imagen {{versionProductImagen.name}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <img
+      alt="Image placeholder"
+      style="width: 100%;height: 100%;"
+      [src]="versionProductImagen.src"
+      />
+    </div>
+  </div>
+  <div class=" modal-footer">
+    <div class="d-flex w-100">
+      <div class="mr-auto">
+        <button
+          (click)="modal.dismiss('Cross click')"
+          class=" btn btn-link "
+          data-dismiss="modal"
+          type="button"
+          >
+          Cerrar
+        </button>
+      </div>
+    </div>
+</div>
+</ng-template>
+<ng-template #versionsProduct let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Selecciona la versión del producto a acondicionar</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="items-list">
+      <ul>
+        <li *ngFor="let item of versionsProductSelected,index as i" (click)="navigateTo(['dashboards/directriz',item.id]);modal.dismiss('Cross click');">
+          {{item.name}}
+        </li>     
+      </ul>
+    </div> 
+    <button
+    (click)="modal.dismiss('Cross click')"
+    class=" btn btn-link ml-auto"
+    data-dismiss="modal"
+    type="button"
+    >
+    Cerrar
+  </button>
+  </div>
+</ng-template>
+<div class="header pb-6">
+  <div class="container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">Productos</h6>
+
+          <nav
+          aria-label="breadcrumb"
+          class=" d-none d-md-inline-block ml-md-4"
+          >
+          <ol class=" breadcrumb breadcrumb-links">
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> <i class=" ni ni-archive-2 "> </i> </a>
+            </li>
+
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> Acondicionamiento </a>
+            </li>
+
+            <li aria-current="page" class=" breadcrumb-item active">
+              Productos
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="container-fluid mt--6">
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class="col"><h3 class=" mb-0">Lista de productos</h3></div>
+
+            <div class="col text-right">
+              <!--<button class="btn btn-sm btn-primary" (click)="open(form)">
+                Crear nuevo
+              </button>-->
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar Producto..." [(ngModel)]="searchTable">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('cod_sap')">Código SAP</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('descriptions')">Descripción</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('codgf')">Código golden</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('product_brand')">Marca</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('product_type_ova')">Producto tipo OVA</th>
+
+                <!-- <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('factura_folio_num')">Número de folio de factura</th> -->
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('ova_process_type')">Tipo proceso OVA</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('versions')">Versión</th>
+
+               <!--  <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('lote')">Lote</th> -->
+
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+            <tbody class=" list">
+              <tr *ngFor="let product of ( products | filterProduct: searchTable ) | paginate: { itemsPerPage: 5, currentPage: p } ">
+                <td class=" budget">{{product.cod_sap}}</td>
+                <td class=" budget">{{product.descriptions}}</td>
+                
+
+                <td class=" budget">{{product.codgf}}</td>
+
+                <td class=" budget">{{product.product_brand.name}}</td>
+
+                <td class=" budget">{{product.ova_product_type?product.ova_product_type.name:'Sin producto tipo OVA registrado'}}</td>
+
+                <!-- <td class=" budget">{{product.factura?product.factura.folioNum:'Sin factura registrada'}}</td> -->
+
+                <td class=" budget">{{product.ova_process_type?product.ova_process_type.descriptions:'Sin proceso tipo OVA registrado'}}</td>
+
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">
+                      <a href="javascript:void(0)" (click)="showVersions(product.versions)">{{product.versions.length}}</a>
+                      </span>
+                    </div>
+                  </div>
+                </th>
+
+                 <!-- <td class=" budget">{{product.lot?product.lot.name:'Sin lote registrado'}}</td> -->
+
+                    <td class=" text-right">
+                      <div dropdown class="dropdown no-caret">
+                        <a
+                        id="button-basic"
+                        dropdownToggle
+                        role="button"
+                        class="btn btn-sm btn-icon-only text-light dropdown-toggle"
+                        aria-controls="dropdown-basic"
+                        >
+                        <i class=" fas fa-ellipsis-v"> </i>
+                      </a>
+
+                      <div
+                      class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                      style="position: relative;z-index:10;"
+                      *dropdownMenu
+                      >
+                      <button class="dropdown-item" (click)="edit(product,form)">
+                        Editar
+                      </button>
+                      <button class="dropdown-item" (click)="delete(product.id)">
+                        Eliminar
+                      </button>
+                      <button class="dropdown-item" (click)="goToForm('dashboards/product-version-form/product',product.id)">
+                        Crear nueva versión
+                      </button>
+                      <button class="dropdown-item" (click)="goToForm('dashboards/lot/product',product.id)">
+                        Crear nuevo lote
+                      </button>
+                      <button *ngIf="product.versions.length>0" class="dropdown-item" (click)="condition(product,versionsProduct)">
+                        Acondicionar
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+    </table>
+  </div>
+        <div class="card-footer border-0">
+          <pagination-controls 
+        (pageChange)="p = $event" 
+        maxSize="5" 
+        responsive="true" 
+        previousLabel="Anterior"
+        nextLabel="Siguiente"></pagination-controls>
+        </div>
+</div>
+</div>
+</div>
+<div class="row" *ngIf="versionProducts.length>0">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center">
+            <div class="col"><h3 class=" mb-0">Lista de versión de producto: {{product.cod_sap}}</h3></div>
+            <div class="col text-right">
+              <button class="btn btn-sm btn-default" (click)="closeVesionProductTable()">
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+          <div class="table-responsive" >
+            <table class=" table align-items-center table-flush">
+              <thead class=" thead-light">
+                <tr>
+                  <th class=" sort" data-sort="name" scope="col">Nombre</th>
+                  <th class=" sort" data-sort="budget" scope="col">Imagenes</th>
+
+                </tr>
+              </thead>
+              <tbody class=" list">
+                <tr *ngFor="let versionProduct of versionProducts">
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        <span class="name mb-0 text-sm">
+                        <a href="javascript:void(0)"  (click)="navigateTo(['dashboards/product-version-form','products',versionProduct.id])">{{versionProduct.name}}</a>
+                        </span>
+                      </div>
+                    </div>
+                  </th>        
+                  <td>
+                    <div class=" avatar-group">
+                      <a class=" avatar avatar-sm rounded-circle" tooltip="Cara principal" placement="top" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenMainFace?versionProduct.imagenMainFace:'https://www.tibs.org.tw/images/default.jpg','Cara principal')">
+                        <img style="width: 100%;height: 100%;" alt="Cara principal" [src]="versionProduct.imagenMainFace"/>
+                      </a>
+                      <a class=" avatar avatar-sm rounded-circle" tooltip="Información nutricional 1" placement="top" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenNutritionalInformation1?versionProduct.imagenNutritionalInformation1:'https://www.tibs.org.tw/images/default.jpg','Información nutricional 1')">
+                        <img style="width: 100%;height: 100%;" alt="Información nutricional 1" [src]="versionProduct.imagenNutritionalInformation1"/>
+                      </a>
+                      <a class=" avatar avatar-sm rounded-circle" tooltip="Información nutricional 2" placement="top" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenNutritionalInformation2?versionProduct.imagenNutritionalInformation2:'https://www.tibs.org.tw/images/default.jpg','Información nutricional 2')">
+                        <img style="width: 100%;height: 100%;" alt="Información nutricional 2" [src]="versionProduct.imagenNutritionalInformation2"/>
+                      </a>
+                      <a class=" avatar avatar-sm rounded-circle" tooltip="Claims Y Marketing 1" placement="top" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenClaimsYMarketing1?versionProduct.imagenClaimsYMarketing1:'https://www.tibs.org.tw/images/default.jpg','Claims Y Marketing 1')">
+                        <img style="width: 100%;height: 100%;" alt="Claims Y Marketing 1" [src]="versionProduct.imagenClaimsYMarketing1"/>
+                      </a>
+                    </div>
+                     <div class=" avatar-group">
+                      <a class=" avatar avatar-sm rounded-circle" tooltip="Claims Y Marketing 2" placement="top" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenClaimsYMarketing2?versionProduct.imagenClaimsYMarketing2:'https://www.tibs.org.tw/images/default.jpg','Claims Y Marketing 2')">
+                        <img style="width: 100%;height: 100%;" alt="Claims Y Marketing 2" [src]="versionProduct.imagenClaimsYMarketing2"/>
+                      </a>
+                      <a class=" avatar avatar-sm rounded-circle" tooltip="Versión de Producto" placement="top" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenProductVersion?versionProduct.imagenProductVersion:'https://www.tibs.org.tw/images/default.jpg','Versión de Producto')">
+                        <img style="width: 100%;height: 100%;" alt="Versión de Producto" [src]="versionProduct.imagenProductVersion"/>
+                      </a>
+                      <a class=" avatar avatar-sm rounded-circle" tooltip="EAN13" placement="top" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenEAN13?versionProduct.imagenEAN13:'https://www.tibs.org.tw/images/default.jpg','EAN13')">
+                        <img style="width: 100%;height: 100%;" alt="EAN13" [src]="versionProduct.imagenEAN13"/>
+                      </a>
+                      <a class=" avatar avatar-sm rounded-circle" tooltip="Adicional 1" placement="top" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenAditional1?versionProduct.imagenAditional1:'https://www.tibs.org.tw/images/default.jpg','Adicional 1')">
+                        <img style="width: 100%;height: 100%;" alt="Adicional 1" [src]="versionProduct.imagenAditional1"/>
+                      </a>
+                    </div>
+                    <div class=" avatar-group">
+                      <a class=" avatar avatar-sm rounded-circle" tooltip="Adicional 2" placement="top" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenAditional2?versionProduct.imagenAditional2:'https://www.tibs.org.tw/images/default.jpg','Adicional 2')">
+                        <img style="width: 100%;height: 100%;" alt="Adicional 2" [src]="versionProduct.imagenAditional2"/>
+                      </a>
+                      <a class=" avatar avatar-sm rounded-circle" tooltip="Adicional 3" placement="top" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenAditional3?versionProduct.imagenAditional3:'https://www.tibs.org.tw/images/default.jpg','Adicional 3')">
+                        <img style="width: 100%;height: 100%;" alt="Adicional 3" [src]="versionProduct.imagenAditional3"/>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div> 
+
+      </div>
+    </div>
+  </div>
+
+</div>

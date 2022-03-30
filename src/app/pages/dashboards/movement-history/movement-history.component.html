@@ -1,0 +1,173 @@
+<div class=" header pb-6">
+  <div class=" container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">Historial de movimientos</h6>
+
+          <nav
+          aria-label="breadcrumb"
+          class=" d-none d-md-inline-block ml-md-4"
+          >
+          <ol class=" breadcrumb breadcrumb-links">
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> <i class=" fas fa-home"> </i> </a>
+            </li>
+
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> Dashboards </a>
+            </li>
+
+            <li aria-current="page" class=" breadcrumb-item active">
+              Historial de movimientos
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="container-fluid mt--6">
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class="col"><h3 class=" mb-0">Lista de historial de movimiento</h3></div>
+            <div class="col text-right">
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <form class="form-inline">
+                <div class="form-group hidden">
+                  <div class="input-group" >
+                    <input name="datepicker"
+                           class="form-control"
+                           ngbDatepicker
+                           #datepicker="ngbDatepicker"
+                           [autoClose]="'outside'"
+                           (dateSelect)="onDateSelection($event)"
+                           [displayMonths]="2"
+                           [dayTemplate]="t"
+                           outsideDays="hidden"
+                           [startDate]="fromDate!">
+                      <ng-template #t let-date let-focused="focused">
+                        <span class="custom-day"
+                              [class.focused]="focused"
+                              [class.range]="isRange(date)"
+                              [class.faded]="isHovered(date) || isInside(date)"
+                              (mouseenter)="hoveredDate = date"
+                              (mouseleave)="hoveredDate = null">
+                          {{ date.day }}
+                        </span>
+                      </ng-template>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <input #dpFromDate
+                           class="form-control" placeholder="yyyy-mm-dd"
+                           name="dpFromDate"
+                           [value]="formatter.format(fromDate)"
+                           (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary calendar" (click)="datepicker.toggle()" type="button"><i class="fa fa-calendar-day"></i></button>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group ml-2">
+                  <div class="input-group">
+                    <input #dpToDate
+                           class="form-control" placeholder="yyyy-mm-dd"
+                           name="dpToDate"
+                           [value]="formatter.format(toDate)"
+                           (input)="toDate = validateInput(toDate, dpToDate.value)">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary calendar" (click)="datepicker.toggle()" type="button"><i class="fa fa-calendar-day"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col-md-4">
+              <input class="form-control" placeholder="Buscar Usuario..." [(ngModel)]="searchTable">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col">Código interno</th>
+
+                <th class=" sort" data-sort="budget" scope="col">Descripción</th>
+
+                <th class=" sort" data-sort="budget" scope="col">Tamaño</th>
+
+                <th class=" sort" data-sort="status" scope="col">Usuario</th>
+
+                <th class=" sort" data-sort="status" scope="col">Comentario</th>
+
+                <th class=" sort" data-sort="status" scope="col">Tipo de movimiento</th>
+
+                <th class=" sort" data-sort="status" scope="col">Fecha de registro</th>
+
+                <th class=" sort" data-sort="status" scope="col">Cantidad</th>
+
+                <th class=" sort" data-sort="status" scope="col">Documentos</th>
+
+                <!--<th scope="col">Acción</th>-->
+              </tr>
+            </thead>
+
+            <tbody class=" list">
+              <tr *ngFor="let movement of ( movementHistories | filterMovement: searchTable ) | paginate: { itemsPerPage: 5, currentPage: p }  ,index as i">
+              <td class=" budget">{{movement.insumo.cod_interno}}</td>
+
+              <td class=" budget">{{movement.insumo.descriptions}}</td>
+
+              <td class=" budget">{{movement.insumo.tamano}}</td>
+
+              <td class=" budget">{{movement.user.email}}</td>
+
+              <td class=" budget">{{movement.observations}}</td>
+
+              <td class=" budget">{{movement.movement}}</td>
+
+              <td class=" budget">{{formatDate(movement.created_at)}}</td>
+
+              <td class=" budget">{{movement.cantidad}}</td>
+
+              <th scope="row">
+                  <div class=" media align-items-center">
+                    <a *ngIf="movement.pdf" class=" avatar rounded-circle mr-3" href="javascript:void(0)" (click)="openPDF(movement.pdf)">
+                      <img alt="Image placeholder" style="width: 48px;height: 48px;" src="https://blog.analiticamente.es/wp-content/uploads/2016/08/optmizar-pdf-297x300.png"/>
+                    </a>
+                    <img *ngIf="!movement.pdf" alt="Image placeholder" style="width: 48px;height: 48px;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRvAsqB_afzwBGMeOOu4c62Px1nX_6FhlnIVw&usqp=CAU"/>
+                    
+                </div>
+              </th>
+
+              
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer border-0">
+               <pagination-controls 
+        (pageChange)="p = $event" 
+        maxSize="5" 
+        responsive="true" 
+        previousLabel="Anterior"
+        nextLabel="Siguiente"></pagination-controls>
+        </div>
+</div>
+</div>
+</div>
+</div>

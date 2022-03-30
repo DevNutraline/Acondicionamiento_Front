@@ -1,0 +1,261 @@
+
+<div class=" header pb-6">
+  <div class=" container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">{{versionProduct.id?'Actualizar versión de producto':'Registrar nuevo versión de producto'}}</h6>
+          <nav
+          aria-label="breadcrumb"
+          class=" d-none d-md-inline-block ml-md-4"
+          >
+          <ol class=" breadcrumb breadcrumb-links">
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> <i class=" fas fa-home"> </i> </a>
+            </li>
+
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> Dashboards </a>
+            </li>
+
+            <li aria-current="page" class=" breadcrumb-item active">
+              {{versionProduct.id?'Actualizar versión de producto':'Registrar nuevo versión de producto'}}
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="container-fluid mt--6">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <!-- <div class="col"><h3 class=" mb-0">{{versionProduct.id?'Actualizar versión de producto':'Registrar nuevo versión de producto'}}</h3></div> -->
+            <div class="col"><h3 class=" mb-0">Detalles del Producto</h3></div>
+          </div>
+        </div>
+        <div class="card-body">
+        <form #userForm="ngForm" class="new-event--form"> 
+            <div class="row">
+              <div *ngIf="productSelected" class="col-md-6">
+                <div class="checklist-info">
+                  <div class="copyright text-xl-left text-muted"> Código SAP:
+                    <span class="ml-1">{{productSelected.cod_sap}}</span>
+                  </div>
+                </div>
+                <div class="checklist-info">
+                  <div class="copyright text-xl-left text-muted"> Descripción del producto:
+                    <span class="ml-1">{{productSelected.descriptions}}</span>
+                  </div>
+                </div>
+                <div class="checklist-info">
+                  <div class="copyright text-xl-left text-muted"> Tipo proceso OVA:
+                    <span *ngIf="productSelected.ova_process_type!=undefined" class="ml-1">{{productSelected.ova_process_type?productSelected.ova_process_type.name:'Sin tipo proceso OVA registrado'}}</span>
+                  </div>
+                </div>
+                <div class="checklist-info" *ngIf="productSelected.product_brand!=undefined">
+                  <div class="copyright text-xl-left text-muted"> Marca:
+                    <span class="ml-1">{{productSelected.product_brand.name}}</span>
+                  </div>
+                </div>
+                <div class="checklist-info">
+                  <div class="copyright text-xl-left text-muted"> Producto tipo OVA:
+                    <span *ngIf="productSelected.ova_product_type!=undefined" class="ml-1"> {{productSelected.ova_product_type?productSelected.ova_product_type.name:'Sin producto tipo OVA'}} </span>
+                  </div>
+                </div>
+              </div>
+              <div [class]="productSelected?'col-md-6':'col-md-12'">          
+                <div class="form-group">
+                  <label class="form-control-label">Nombre</label>
+                  <input
+                    placeholder="Nombre"
+                    class="form-control form-control-alternative new-event--title"
+                    type="text"
+                    [(ngModel)]="versionProduct.name" 
+                    [ngModelOptions]="{standalone: true}"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-control-label">Producto</label>
+                  <div class="input-group">
+                    <ngx-select-dropdown 
+                    [(ngModel)]="productSelected" [ngModelOptions]="{standalone: true}"
+                    (change)="selectionChanged($event,'product')" 
+                    [multiple]="false"
+                    [disabled]="selectDisabled" 
+                    [config]="productConfig" 
+                    [options]="products" 
+                    ngDefaultControl 
+                    class="w-100 h-100"
+                    ></ngx-select-dropdown>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label">Cara principal</label>
+                  <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <input type="file" capture="environment" id="imageUploadMainFace" (change)="fileProgress($event,'main_face')"/>
+                        <label for="imageUploadMainFace"></label>
+                      </div>
+                      <div class="avatar-preview">
+
+                        <img class="profile-user-img img-responsive img-circle" id="" [src]="previewUrlMainFace?previewUrlMainFace:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label">Información Nutricional 1</label>
+                  <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <input type="file" capture="environment" id="imageUploadNutritionalInformation1" (change)="fileProgress($event,'nutritional_information1')"/>
+                        <label for="imageUploadNutritionalInformation1"></label>
+                      </div>
+                      <div class="avatar-preview">
+
+                        <img class="profile-user-img img-responsive img-circle" id="" [src]="previewUrlNutritionalInformation1?previewUrlNutritionalInformation1:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                <div class="form-group">
+                  <label class="form-control-label">Información Nutricional 2 <span class="text-success">opc</span></label>
+                    <div class="avatar-upload">
+                      <div class="avatar-edit">
+                        <input type="file" capture="environment" id="imageUploadNutritionalInformation2" (change)="fileProgress($event,'nutritional_information2')"/>
+                        <label for="imageUploadNutritionalInformation2"></label>
+                      </div>
+                      <div class="avatar-preview">
+
+                        <img class="profile-user-img img-responsive img-circle" id="" [src]="previewUrlNutritionalInformation2?previewUrlNutritionalInformation2:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label">Claims y Marketing 1</label>
+                    <div class="avatar-upload">
+                      <div class="avatar-edit">
+                        <input type="file" capture="environment" id="imageUploadClaimsYMarketing1" (change)="fileProgress($event,'claims_marketing1')"/>
+                        <label for="imageUploadClaimsYMarketing1"></label>
+                      </div>
+                      <div class="avatar-preview">
+                        <img class="profile-user-img img-responsive img-circle" id="" [src]="previewUrlClaimsYMarketing1?previewUrlClaimsYMarketing1:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label">Claims y Marketing 2 <span class="text-success">opc</span></label>
+                    <div class="avatar-upload">
+                      <div class="avatar-edit">
+                        <input type="file" capture="environment" id="imageUploadClaimsYMarketing2" (change)="fileProgress($event,'claims_marketing2')"/>
+                        <label for="imageUploadClaimsYMarketing2"></label>
+                      </div>
+                      <div class="avatar-preview">
+                        <img class="profile-user-img img-responsive img-circle" id="" [src]="previewUrlClaimsYMarketing2?previewUrlClaimsYMarketing2:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label">Versión del producto</label>
+                    <div class="avatar-upload">
+                      <div class="avatar-edit">
+                        <input type="file" capture="environment" id="imageUploadProductVersion" (change)="fileProgress($event,'product_version')"/>
+                        <label for="imageUploadProductVersion"></label>
+                      </div>
+                      <div class="avatar-preview">
+                        <img class="profile-user-img img-responsive img-circle" id="" [src]="previewUrlProductVersion?previewUrlProductVersion:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label">EAN13</label>
+                    <div class="avatar-upload">
+                      <div class="avatar-edit">
+                        <input type="file" capture="environment" id="imageUploadEAN13" (change)="fileProgress($event,'ean13')"/>
+                        <label for="imageUploadEAN13"></label>
+                      </div>
+                      <div class="avatar-preview">
+                        <img class="profile-user-img img-responsive img-circle" id="" [src]="previewUrlEAN13?previewUrlEAN13:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label">Adicional 1 <span class="text-success">opc</span></label>
+                    <div class="avatar-upload">
+                      <div class="avatar-edit">
+                        <input type="file" capture="environment" id="imageUploadAditional1" (change)="fileProgress($event,'aditional1')"/>
+                        <label for="imageUploadAditional1"></label>
+                      </div>
+                      <div class="avatar-preview">
+                        <img class="profile-user-img img-responsive img-circle" id="" [src]="previewUrlAditional1?previewUrlAditional1:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label">Adicional 2 <span class="text-success">opc</span></label>
+                    <div class="avatar-upload">
+                      <div class="avatar-edit">
+                        <input type="file" capture="environment" id="imageUploadAditional2" (change)="fileProgress($event,'aditional2')"/>
+                        <label for="imageUploadAditional2"></label>
+                      </div>
+                      <div class="avatar-preview">
+                        <img class="profile-user-img img-responsive img-circle" id="" [src]="previewUrlAditional2?previewUrlAditional2:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="form-control-label">Adicional 3 <span class="text-success">opc</span></label>
+                    <div class="avatar-upload">
+                      <div class="avatar-edit">
+                        <input type="file" capture="environment" id="imageUploadAditional3" (change)="fileProgress($event,'aditional3')"/>
+                        <label for="imageUploadAditional3"></label>
+                      </div>
+                      <div class="avatar-preview">
+                        <img class="profile-user-img img-responsive img-circle" id="" [src]="previewUrlAditional3?previewUrlAditional3:'https://icons.iconarchive.com/icons/graphicloads/100-flat-2/256/arrow-upload-icon.png'" alt="User profile picture">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </form>
+               
+      </div>
+      <div class="card-footer">
+          <button
+            class=" btn btn-primary new-event--add"
+            type="submit"
+            (click)="register()"
+            >
+            {{versionProduct.id?'Actualizar':'Registrar'}}
+          </button>
+        </div> 
+      </div>
+      
+    </div>
+  </div>
+</div>

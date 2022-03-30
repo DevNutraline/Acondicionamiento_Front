@@ -1,0 +1,649 @@
+<ng-template #form let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{productRating.id?'Actualizar recepción de producto':'Registrar nuevo recepción de producto'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form"> 
+      <div class="row">
+        <div class="col-md-12">          
+          <div class="form-group">
+            <label class="form-control-label">Nombre</label>
+            <input
+              placeholder="Nombre"
+              class="form-control form-control-alternative new-event--title"
+              type="text"
+              [(ngModel)]="productRating.name" 
+              [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-control-label">Descripción</label>
+            <input
+            placeholder="Descripción"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="productRating.descriptions" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+      </div>
+      </form>
+    </div>
+    <div class=" modal-footer">
+      <div class="d-flex w-100">
+        <div class="mr-auto">
+          <button
+            (click)="modal.dismiss('Cross click')"
+            class=" btn btn-link"
+            data-dismiss="modal"
+            type="button"
+            >
+            Cerrar
+          </button>
+        </div>
+        <div class="ml-auto">            
+          <button
+            class=" btn btn-primary new-event--add"
+            type="submit"
+            (click)="register()"
+            >
+            {{productRating.id?'Actualizar':'Registrar'}}
+          </button>
+        </div>
+      </div>
+  </div>
+</ng-template>
+
+<ng-template #productReceptionProcessed let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Lista de recepción de productos procesados</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    
+    <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="budget" scope="col" >
+                  Versión
+                </th>
+                <th class=" sort" data-sort="budget" scope="col">
+                  Informados
+                </th>
+              </tr>
+            </thead>
+            <tbody class=" list">
+              <tr *ngFor="let element of productReceptionByVersion">
+                <td class=" budget">{{element.version?element.version.name:'Sin versión registrada'}}</td>
+                <td class=" budget">{{element.quantity_reported?element.quantity_reported:'Sin catidad reportada'}}</td>
+              </tr>              
+            </tbody>
+          </table>
+        </div>
+  </div>
+  <div class=" modal-footer">
+    <div class="d-flex w-100">
+      <div class="mr-auto">
+        <button
+        (click)="modal.dismiss('Cross click')"
+        class=" btn btn-link"
+        data-dismiss="modal"
+        type="button"
+        >
+        Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<div class=" header pb-6">
+  <div class=" container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">Recepción de productos</h6>
+          <nav
+          aria-label="breadcrumb"
+          class=" d-none d-md-inline-block ml-md-4"
+          >
+          <ol class=" breadcrumb breadcrumb-links">
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> <i class=" ni ni-app"> </i> </a>
+            </li>
+
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> Recepcíon </a>
+            </li>
+
+            <li aria-current="page" class=" breadcrumb-item active">
+              Recepción de productos
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="container-fluid mt--6" >
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class="col"><h3 class=" mb-0">Código de carpeta</h3></div>
+            
+            <div class="col text-right">
+              <button class="btn btn-sm btn-primary" (click)="searchFolderCode()">
+                Buscar
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar código de carpeta..." [(ngModel)]="folderCode">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="folder">
+    <div  class="col-md-12">
+      <div class="card">
+        <div class="card-header border-0" style="padding-bottom: 0px;">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class="col"><h3 class=" mb-0">Detalles de la capeta</h3></div>
+          </div>
+        </div>
+        <div class="card-body" style="padding-top: 0px;">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="checklist-info">
+                  <div class="copyright text-xl-left text-muted" style="font-size: 0.875rem;"> 
+                    <div>Código de carpeta:</div>
+                    <span class="ml-1" style="color: #000;">{{folder.cod_carpeta}}</span>
+                  </div>
+                </div>
+                <br>
+                <div class="checklist-info">
+                  <div class="copyright text-xl-left text-muted" style="font-size: 0.875rem;"> 
+                    <div>u_NXFechaArribo:</div>
+                    <span  class="ml-1"  style="color: #000;">{{formatDate(folder.u_NXFechaArribo)}}</span>
+                  </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+              <div class="checklist-info">
+                  <div class="copyright text-xl-left text-muted" style="font-size: 0.875rem;"> 
+                    <div>u_NXBL:</div>
+                    <span class="ml-1" style="color: #000;">{{folder.u_NXBL}}</span>
+                  </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+              <div class="checklist-info">
+                  <div class="copyright text-xl-left text-muted" style="font-size: 0.875rem;"> 
+                    <div>u_NXNave:</div>
+                    <span  class="ml-1"  style="color: #000;">{{folder.u_NXNave}}</span>
+                  </div>
+                </div>
+            </div>
+              
+                
+                
+                
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class=" row align-items-center" style="margin-bottom: 10px;">
+            <div class=" col"><h3 class=" mb-0">Lista de carpetas</h3></div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col" >
+                  Código de carpeta
+                </th>
+                <th class=" sort" data-sort="name" scope="col" >
+                  Estado
+                </th>
+                <th class=" sort" data-sort="name" scope="col" >
+                  Tipo
+                </th>
+                <th class=" sort" data-sort="name" scope="col" >
+                  Fecha inicio
+                </th>
+                <th class=" sort" data-sort="name" scope="col" >
+                  Fecha cierre
+                </th>
+                <th class=" sort" data-sort="name" scope="col" >
+                  Fecha de arribo
+                </th>
+                <th class=" sort" data-sort="name" scope="col" >
+                  Fecha inicio Ova
+                </th>
+                <th class=" sort" data-sort="name" scope="col" >
+                  Fecha fin Ova
+                </th>
+                <th class=" sort" data-sort="name" scope="col" >
+                  Fecha liberada a venta
+                </th>
+                <th class=" sort" data-sort="name" scope="col" >
+                  Estado comercial
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class=" list">
+              <tr *ngFor="let folder of  ( folders | filterCarpeta: searchTable ) | paginate: { id: 'pagination1',itemsPerPage: 5, currentPage: pFolder }" (click)="selectFolder(folder)" style="cursor: pointer;">
+              <th scope="row">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <span class="name mb-0 text-sm">
+                      <a href="javascript:void(0)" >{{folder.cod_carpeta}}</a>
+                    </span>
+                  </div>
+                </div>
+              </th>
+              <td class=" budget">{{folder.status}}</td>
+              <td class=" budget">{{folder.type}}</td>
+              <td class=" budget">{{formatDate(folder.created_at)}}</td>
+              <td class=" budget">{{folder.closed_at?formatDate(folder.closed_at):'La carpeta no ha sido cerrada'}}</td>
+              <td class=" budget">{{folder.arrival_date?formatDate(folder.arrival_date):'La carpeta no tiene fecha de arribo'}}</td>
+              <td class=" budget">{{folder.ova_start_date?formatDate(folder.ova_start_date):'La carpeta no ha iniciado en OVA'}}</td>
+              <td class=" budget">{{folder.ova_end_date?formatDate(folder.ova_end_date):'La carpeta no ha finalizado en OVA'}}</td>
+              <td class=" budget">{{folder.date_released_sale?formatDate(folder.date_released_sale):'La carpeta no ha sido liberada a venta'}}</td>
+              <td class=" budget">{{folder.commercial_status?folder.commercial_status:'Sin estado comercial registrado'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer border-0">
+    <pagination-controls 
+      id="pagination1"
+        (pageChange)="pFolder = $event" 
+        maxSize="5" 
+        responsive="true" 
+        previousLabel="Anterior"
+        nextLabel="Siguiente"></pagination-controls>
+  </div>
+</div>
+</div>
+</div>
+  <div *ngIf="facturas.length>0" class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class="col"><h3 class=" mb-0">Lista de facturas</h3></div>
+            
+            <!--<div class="col text-right">
+              <button class="btn btn-sm btn-primary" (click)="open(form)">
+                Crear nuevo
+              </button>
+            </div>-->
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar factura..." [(ngModel)]="searchTableFactura">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('doc_num')">
+                  DocNumero 
+                </th>
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('doc_date')">
+                  DocDate
+                </th>
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('card_code')">
+                  Código de tarjeta
+                </th>
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('card_name')">
+                  Nombre de tarjeta
+                </th>
+              </tr>
+            </thead>
+            <tbody class=" list">
+              <tr *ngFor="let factura of ( facturas | filterFactura:searchTableFactura ) | paginate: {  id: 'pagination2',itemsPerPage: 5, currentPage: pFactura };index as i " (click)="selectRow(factura)" style="cursor: pointer;">
+                <td class=" budget">{{factura.id_clone}}</td>
+                <td class=" budget">{{factura.docDate}}</td>
+                <td class=" budget">{{factura.cardCode}}</td>
+                <td class=" budget">{{factura.cardName}}</td>
+              </tr>              
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer border-0">
+          <div class="row">
+            <div class="col-md-12">              
+              <pagination-controls 
+              id="pagination2"
+                (pageChange)="pFactura = $event" 
+                maxSize="5" 
+                responsive="true" 
+                previousLabel="Anterior"
+                nextLabel="Siguiente">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="productsReceptionSelected.length>0" class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class="col"><h3 class=" mb-0">Lista de productos de la factura {{facturaSelected.id_clone}}</h3></div>
+
+            <div class="col text-right">
+              <button class="btn btn-sm btn-primary" (click)="navigateTo(['dashboards/products',folderCode,facturaSelected.id])">
+                Crear nuevo producto
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="closeProductTable()">
+                Cerrar
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar Producto..." [(ngModel)]="searchTableProducto">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('cod_sap')">Código SAP</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('descriptions')">Descripción</th>
+                
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('original_quantity')">
+                  Cantidad original
+                </th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('quantity_reported')">
+                  Cantidad recepcionada
+                </th>
+
+                <th class=" sort" data-sort="budget" scope="col">
+                  Recepcionado totales
+                </th>
+
+                <th class=" sort" data-sort="budget" scope="col">
+                  Cantidad a recepcionar
+                </th>
+                
+                <th class=" sort" data-sort="budget" scope="col" style="min-width:300px;">
+                  Versión de producto
+                </th>                
+
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('product_type_ova')" style="min-width:300px;">Producto tipo OVA</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('ova_process_type')" style="min-width:300px;">Tipo proceso OVA</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('lot')" style="min-width:300px;">Lote</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('product_brand')">Marca</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('factura_folio_num')">Número de folio de factura</th>
+
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('versions')">Versión</th>
+              </tr>
+            </thead>
+            <tbody class=" list">
+              <tr *ngFor="let productReception of ( productsReceptionSelected | filterProductReception: searchTableProducto ) | paginate: { 
+                id:'pagination3', itemsPerPage: 5, currentPage: pProducto } ;index as j">
+                <td class=" budget">{{productReception.product.cod_sap}}</td>
+                <td class=" budget">{{productReception.product.descriptions}}</td>                
+                <td class=" budget">{{productReception.quantity?productReception.quantity:'Sin cantidad original registrada'}}</td>
+                <td class="budget"><!--cantidad recepcionada-->
+                  {{
+                    productReception.last_quantity_reported ? productReception.last_quantity_reported : (productReception.last_id_version_product?getLastVersionProduct(productReception).quantity_reported:'Sin cantidad registrada')
+                  }}
+                </td>
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">
+                      <a href="javascript:void(0)" (click)="openProductReceptionProcessed(productReceptionProcessed,productReception)">{{productReception.total_processed}}</a>
+                      </span>
+                    </div>
+                  </div>
+                </th>
+                <td class=" budget">
+                  <input 
+                  type="number" 
+                  name="" 
+                  [(ngModel)]="productReception.quantity_process" 
+                  [ngModelOptions]="{standalone: true}"
+                  >
+                  <button [disabled]="productReception.quantity_process<=0" (click)="processUnit(productReception.id,productReception.quantity_process,productReception.version_product,productReception.product_type_o_v_a,productReception.ova_process_type,productReception.lot,productReception.total_processed,productReception.quantity)" type="button" class="btn btn-sm mr-0">
+                    <i class=" fas fa-check"> </i>
+                  </button>
+                </td>
+                <td class=" budget">
+                  <div class="d-flex">
+                    <div style="width: 90%;">
+                      <ngx-select-dropdown 
+                      [(ngModel)]="productReception.version_product" [ngModelOptions]="{standalone: true}"
+                      (change)="selectionChanged($event,j,'version_product',productReception)"
+                      [multiple]="false" 
+                      [config]="productVersionConfig" 
+                      [options]="productReception.product.versions" 
+                      ngDefaultControl 
+                      class="w-100 h-100"
+                      ></ngx-select-dropdown>
+                    </div>
+                    <div style="width: 10%;">  
+                      <a href="javascript:void(0)" (click)="navigateTo(['dashboards/product-version-form','product',productReception.product.id,folderCode,facturaSelected.id,productReception.id])" class="btn btn-sm mr-0">
+                        <i class=" fas fa-plus"> </i>
+                      </a>
+                    </div>
+                  </div>                  
+                </td>
+
+                <td class=" budget">
+                  <div class="d-flex">
+                    <div style="width: 90%;">                      
+                      <ngx-select-dropdown 
+                      [(ngModel)]="productReception.custom_to" [ngModelOptions]="{standalone: true}"
+                      [multiple]="false" 
+                      [config]="productTypeOVAConfig" 
+                      [options]="productTypeOVAs" 
+                      ngDefaultControl 
+                      class="w-100 h-100"
+                      ></ngx-select-dropdown>
+                    </div>
+                    <div style="width: 10%;">  
+                      <button (click)="processUnit(productReception.id,productReception.quantity_process,productReception.version_product,productReception.custom_to,productReception.custom_pt,productReception.lot)" type="button" class="btn btn-sm mr-0">
+                      <i class=" fas fa-check"> </i>
+                      </button>
+                    </div>
+                  </div>
+                </td>
+                <td class=" budget">
+                  <div class="d-flex">
+                    <div style="width: 90%;">
+                      <ngx-select-dropdown 
+                      [(ngModel)]="productReception.custom_pt" [ngModelOptions]="{standalone: true}"
+                      [multiple]="false" 
+                      [config]="ovaProcessTypeConfig" 
+                      [options]="ovaProcessTypes" 
+                      ngDefaultControl 
+                      class="w-100 h-100"
+                      ></ngx-select-dropdown>
+                    </div>
+                    <div style="width: 10%;">  
+                      <button (click)="processUnit(productReception.id,productReception.quantity_process,productReception.version_product,productReception.custom_to,productReception.custom_pt,productReception.lot)" type="button" class="btn btn-sm mr-0">
+                      <i class=" fas fa-check"> </i>
+                      </button>
+                    </div>
+                  </div>
+                </td>
+                <td class=" budget">
+                  <div class="d-flex">
+                    <div style="width: 70%;">
+                      <!-- [options]="lots"  -->
+                      <ngx-select-dropdown 
+                      [(ngModel)]="productReception.lot" [ngModelOptions]="{standalone: true}"
+                      [multiple]="false" 
+                      [config]="lotConfig" 
+                      [options]="productReception.product.lots"
+                      ngDefaultControl 
+                      class="w-100 h-100"
+                      ></ngx-select-dropdown>
+                    </div>
+                    <div style="width: 30%;">  
+                      <button (click)="processUnit(productReception.id,productReception.quantity_process,productReception.version_product,productReception.product_type_o_v_a,productReception.ova_process_type,productReception.lot)" type="button" class="btn btn-sm mr-0">
+                      <i class=" fas fa-check"> </i>
+                      </button>
+                      <a href="javascript:void(0)" (click)="navigateTo(['dashboards/lot',folderCode,facturaSelected.id,productReception.id,productReception.product.id])" class="btn btn-sm mr-0">
+                        <i class=" fas fa-plus"> </i>
+                      </a>
+                     <!--  <a href="javascript:void(0)" (click)="navigateTo(['dashboards/product-version-form','product',productReception.product.id,folderCode,facturaSelected.id,productReception.id])" class="btn btn-sm mr-0">
+                        <i class=" fas fa-plus"> </i>
+                      </a> -->
+                    </div>
+                  </div>
+                </td>
+
+                <td class=" budget">{{productReception.product.product_brand?productReception.product.product_brand.name:'Sin marca de producto registrada'}}</td>
+                
+
+                <td class=" budget">{{productReception.product.factura?productReception.product.factura.folioNum:'Sin factura registrada'}}</td>
+
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">
+                      <a href="javascript:void(0)" (click)="showProductVersions(productReception.product.versions)">{{productReception.product.versions.length}}</a>
+                      </span>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer border-0">
+          <div class="row">
+            <div class="col-md-6">              
+              <pagination-controls 
+                id="pagination3"
+                (pageChange)="pProducto = $event" 
+                maxSize="5" 
+                responsive="true" 
+                previousLabel="Anterior"
+                nextLabel="Siguiente">
+              </pagination-controls>
+            </div>
+            <!-- <div class="col-md-6" style="text-align: right;">
+              <button class="btn btn-sm btn-primary" (click)="save()">
+                Guardar
+              </button>
+            </div> -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="versionsSelected.length>0" class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class="col"><h3 class=" mb-0">Lista de versiones</h3></div>
+            <div class="col text-right">
+              <button class="btn btn-sm btn-primary" (click)="closeVersionTable()">
+                Cerrar
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar Versión..." [(ngModel)]="searchTableVersion">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('name')">Name</th>
+                <th class=" sort" data-sort="name" scope="col">Imagenes</th>
+              </tr>
+            </thead>
+            <tbody class=" list">
+              <tr *ngFor="let versionProduct of ( versionsSelected | filterProductVersion: searchTableVersion ) | paginate: {  id: 'pagination4',itemsPerPage: 5, currentPage: pProducto } ;index as j">
+                <td class=" budget">{{versionProduct.name}}</td>
+                <td>
+                    <div class=" avatar-group">
+                      <a class=" avatar avatar-sm rounded-circle" tooltip="Frente" placement="top" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenFrente?versionProduct.imagenFrente:'https://www.tibs.org.tw/images/default.jpg','Frente')">
+                        <img style="width: 100%;height: 100%;" alt="Frente" [src]="versionProduct.imagenFrente"/>
+                      </a>
+                      <a class=" avatar avatar-sm rounded-circle" tooltip="Derecha" placement="top" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenDerecha?versionProduct.imagenDerecha:'https://www.tibs.org.tw/images/default.jpg','Derecha')">
+                        <img style="width: 100%;height: 100%;" alt="Derecha" [src]="versionProduct.imagenDerecha"/>
+                      </a>
+                      <a class=" avatar avatar-sm rounded-circle" tooltip="Izquierda" placement="top" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenIzquierda?versionProduct.imagenIzquierda:'https://www.tibs.org.tw/images/default.jpg','Izquierda')">
+                        <img style="width: 100%;height: 100%;" alt="Izquierda" [src]="versionProduct.imagenIzquierda"/>
+                      </a>
+                      <a class=" avatar avatar-sm rounded-circle" tooltip="Posterior" placement="top" href="javascript:void(0)" (click)="openImage(img,versionProduct.imagenPosterior?versionProduct.imagenPosterior:'https://www.tibs.org.tw/images/default.jpg','Posterior')">
+                        <img style="width: 100%;height: 100%;" alt="Posterior" [src]="versionProduct.imagenPosterior"/>
+                      </a>
+                    </div>
+                  </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer border-0">
+          <div class="row">
+            <div class="col-md-12">              
+              <pagination-controls 
+                id="pagination4"
+                (pageChange)="pProducto = $event" 
+                maxSize="5" 
+                responsive="true" 
+                previousLabel="Anterior"
+                nextLabel="Siguiente">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

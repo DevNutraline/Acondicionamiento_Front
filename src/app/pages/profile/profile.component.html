@@ -1,0 +1,192 @@
+<div
+  class=" header pb-6 d-flex align-items-center"
+  style="min-height: 500px; background-image: url(assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;"
+>
+  <span class=" mask bg-gradient-danger opacity-8"> </span>
+
+  <div class=" container-fluid d-flex align-items-center">
+    <div class=" row">
+      <div class=" col-lg-7 col-md-10">
+        <h1 class=" display-2 text-white">Hola {{user.name}} {{user.last_name}}</h1>
+
+        <p class=" text-white mt-0 mb-5">
+          Esta es tu página de perfil. Puedes ver y actualizar tu información de perfil de usuario
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class=" container-fluid mt--6">
+  <div class=" row">
+    <div class=" col-xl-4 order-xl-2">
+      <div class=" card card-profile">
+        <img
+          alt="Image placeholder"
+          class=" card-img-top"
+          src="assets/img/theme/img-1-1000x600.jpg"
+        />
+
+        
+
+        <div
+          class=" card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4"
+        >
+          <div class=" row justify-content-center">
+            <div class=" col-lg-3 order-lg-2">
+              <div class=" card-profile-image">
+                <a href="javascript:void(0)">
+                  <img
+                    class=" rounded-circle"
+                    src="assets/img/theme/default-avatar.jpg"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=" card-body pt-0">
+
+          <div class=" text-center">
+            <h5 class=" h3">
+              {{user.name}} <span class=" font-weight-light"> {{user.last_name}} </span>
+            </h5>
+
+            <div class=" h5 font-weight-300">
+              <i class=" ni location_pin mr-2"> </i> {{user.email}}
+            </div>
+
+            <div class=" h5 mt-4">
+              <i class=" ni business_briefcase-24 mr-2"> </i> {{user.rol.name}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class=" col-xl-8 order-xl-1">
+
+      <div class=" card">
+        <div class=" card-header">
+          <div class=" row align-items-center">
+            <div class=" col-8"><h3 class=" mb-0">Editar información de perfil</h3></div>
+
+            <div class=" col-4 text-right">
+              <button
+                class="btn btn-sm btn-primary"
+                type="submit"
+                (click)="register()"
+                >
+                Actualizar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class=" card-body">
+          <form>
+            <h6 class=" heading-small text-muted mb-4">User information</h6>
+
+            <div class=" pl-lg-4">
+              <div class=" row">
+                <div class=" col-md-4">
+                  <div class=" form-group">
+                    <label class=" form-control-label" for="input-username">
+                      Nombre
+                    </label>
+
+                    <input
+                      class=" form-control"
+                      id="input-username"
+                      placeholder="Nombre"
+                      type="text"
+                      [(ngModel)]="userForm.name" 
+                      [ngModelOptions]="{standalone: true}"
+                    />
+                  </div>
+                </div>
+
+                <div class=" col-md-4">
+                  <div class=" form-group">
+                    <label class=" form-control-label" for="input-email">
+                      Apellido
+                    </label>
+
+                    <input
+                      class=" form-control"
+                      id="input-email"
+                      placeholder="Apellido"
+                      type="email"
+                      [(ngModel)]="userForm.last_name" 
+                      [ngModelOptions]="{standalone: true}"
+                    />
+                  </div>
+                </div>
+                <div class=" col-md-4">
+                  <div class=" form-group">
+                    <label class=" form-control-label" for="input-first-name">
+                      Email
+                    </label>
+
+                    <input
+                      class=" form-control"
+                      id="input-first-name"
+                      placeholder="First name"
+                      type="text"
+                      [(ngModel)]="userForm.email" 
+                      [ngModelOptions]="{standalone: true}"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr class=" my-4" />
+
+            <h6 class=" heading-small text-muted mb-4">Información de seguridad</h6>
+
+            <div class=" pl-lg-4">
+              <div class=" row">
+                <div class=" col-lg-6">
+                  <div class=" form-group">
+                    <label class=" form-control-label" for="input-city">
+                      Contraseña
+                    </label>
+
+                    <input
+                      class=" form-control"
+                      id="input-city"
+                      placeholder="Contraseña"
+                      type="password"
+                      [(ngModel)]="user.password" 
+                      [ngModelOptions]="{standalone: true}"
+                    />
+                  </div>
+                </div>
+
+                <div class=" col-lg-6">
+                  <div class=" form-group">
+                    <label class=" form-control-label" for="input-country">
+                      Confirmación de contraseña
+                    </label>
+
+                    <input
+                      class=" form-control"
+                      id="input-country"
+                      placeholder="Confirmación de contraseña"
+                      type="password"
+                      [(ngModel)]="user.password_confirmation" 
+                      [ngModelOptions]="{standalone: true}"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,238 @@
+<ng-template #img let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Imagen: {{name}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <img
+        alt="Image placeholder"
+        style="width: 100%;height: 100%;"
+        [src]="versionProductImagen"
+      />
+    </div>
+  </div>
+  <div class=" modal-footer">
+    <button
+    (click)="modal.dismiss('Cross click')"
+    class=" btn btn-link ml-auto"
+    data-dismiss="modal"
+    type="button"
+    >
+    Cerrar
+  </button>
+</div>
+</ng-template>
+<div class=" header pb-6">
+  <div class=" container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">Versión de productos</h6>
+          <nav
+          aria-label="breadcrumb"
+          class=" d-none d-md-inline-block ml-md-4"
+          >
+          <ol class=" breadcrumb breadcrumb-links">
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"><i class=" ni ni-archive-2 "> </i></a>
+            </li>
+
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> Acondicionamiento </a>
+            </li>
+
+            <li aria-current="page" class=" breadcrumb-item active">
+              Versión de productos
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="container-fluid mt--6">
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class="col"><h3 class=" mb-0">Lista de versión de productos</h3></div>
+            
+            <div class="col text-right">
+              <button class="btn btn-sm btn-primary" (click)="goToForm()">
+                Crear nuevo
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar calificación de producto..." [(ngModel)]="searchTable">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('cod_sap')">Código SAP de producto</th>
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('name')">Nombre</th>
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('descriptions')">Producto</th>
+                <th class=" sort" data-sort="budget" scope="col">Imagenes</th>
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+
+            <tbody class=" list">
+              <tr *ngFor="let versionProduct of ( versionProducts | filterProductVersion: searchTable ) | paginate: { itemsPerPage: 5, currentPage: p } ">
+
+                <td class=" budget">{{versionProduct.product.cod_sap}}</td>
+                <td class=" budget">{{versionProduct.name?versionProduct.name:'Sin nombre registrado'}}</td>
+                <td class=" budget">{{versionProduct.product.descriptions}}</td>              
+                <td>
+                  <div class=" avatar-group">
+                    <a 
+                      class=" avatar avatar-sm rounded-circle" 
+                      tooltip="Cara principal" 
+                      placement="top" 
+                      href="javascript:void(0)" 
+                      (click)="openImage(img,versionProduct.imagenMainFace,'Cara principal')">
+                      <img 
+                        style="width: 100%;height: 100%;" 
+                        alt="Cara principal" 
+                        [src]="versionProduct.imagenMainFace"/>
+                    </a>
+                    <a 
+                      class=" avatar avatar-sm rounded-circle" 
+                      tooltip="Información nutricional 1" 
+                      placement="top" 
+                      href="javascript:void(0)" 
+                      (click)="openImage(img,versionProduct.imagenNutritionalInformation1,'Información nutricional 1')">
+                      <img 
+                        style="width: 100%;height: 100%;" 
+                        alt="Información nutricional 1" 
+                        [src]="versionProduct.imagenNutritionalInformation1"/>
+                    </a>
+                    <a 
+                      class=" avatar avatar-sm rounded-circle" 
+                      tooltip="Información nutricional 2" 
+                      placement="top" href="javascript:void(0)" 
+                      (click)="openImage(img,versionProduct.imagenNutritionalInformation2,'Información nutricional 2')">
+                      <img 
+                        style="width: 100%;height: 100%;" 
+                        alt="Información nutricional 2" 
+                        [src]="versionProduct.imagenNutritionalInformation2"/>
+                    </a>
+                    <a 
+                      class=" avatar avatar-sm rounded-circle" 
+                      tooltip="Claims y Marketing 1" 
+                      placement="top" 
+                      href="javascript:void(0)"
+                      (click)="openImage(img,versionProduct.imagenClaimsYMarketing1,'Claims y Marketing 1')">
+                      <img 
+                        style="width: 100%;height: 100%;" 
+                        alt="Claims y Marketing 1" 
+                        [src]="versionProduct.imagenClaimsYMarketing1"/>
+                    </a>
+                  </div>
+                  <div class=" avatar-group">
+                    <a 
+                      class=" avatar avatar-sm rounded-circle" 
+                      tooltip="Claims y Marketing 2" 
+                      placement="top" 
+                      href="javascript:void(0)"
+                      (click)="openImage(img,versionProduct.imagenClaimsYMarketing2,'Claims y Marketing 2')">
+                      <img 
+                        style="width: 100%;height: 100%;" 
+                        alt="" 
+                        [src]="versionProduct.imagenClaimsYMarketing2"/>
+                    </a>
+                    <a 
+                      class=" avatar avatar-sm rounded-circle" 
+                      tooltip="EAN13" 
+                      placement="top" 
+                      href="javascript:void(0)" 
+                      (click)="openImage(img,versionProduct.imagenEAN13,'EAN13')">
+                      <img 
+                        style="width: 100%;height: 100%;" 
+                        alt="EAN13" 
+                        [src]="versionProduct.imagenEAN13"/>
+                    </a>
+                    <a 
+                      class=" avatar avatar-sm rounded-circle" 
+                      tooltip="aditional1" 
+                      placement="top" href="javascript:void(0)" 
+                      (click)="openImage(img,versionProduct.imagenAditional1,'aditional1')">
+                      <img 
+                        style="width: 100%;height: 100%;" 
+                        alt="aditional1" 
+                        [src]="versionProduct.imagenAditional1"/>
+                    </a> 
+                    <a 
+                      class=" avatar avatar-sm rounded-circle" 
+                      tooltip="aditional2" 
+                      placement="top" href="javascript:void(0)" 
+                      (click)="openImage(img,versionProduct.imagenAditional2,'aditional2')">
+                      <img 
+                        style="width: 100%;height: 100%;" 
+                        alt="aditional2" 
+                        [src]="versionProduct.imagenAditional2"/>
+                    </a>                     
+                  </div>
+                  <div class=" avatar-group">
+                    <a 
+                      class=" avatar avatar-sm rounded-circle" 
+                      tooltip="aditional3" 
+                      placement="top" href="javascript:void(0)" 
+                      (click)="openImage(img,versionProduct.imagenAditional3,'aditional3')">
+                      <img 
+                        style="width: 100%;height: 100%;" 
+                        alt="aditional3" 
+                        [src]="versionProduct.imagenAditional3"/>
+                    </a>   
+                  </div>
+                </td>
+                <td class=" text-right">
+                  <div dropdown class="dropdown no-caret">
+                      <a id="button-basic" dropdownToggle role="button" class="btn btn-sm btn-icon-only text-light dropdown-toggle" aria-controls="dropdown-basic"
+                        >
+                        <i class=" fas fa-ellipsis-v"> </i>
+                      </a>
+
+                      <div
+                      class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                      style="position: relative;z-index:10;"
+                      *dropdownMenu
+                      >
+                      <button class="dropdown-item" (click)="goToForm(versionProduct.id)">
+                        Editar
+                      </button>
+                      <!-- <button class="dropdown-item" (click)="delete(versionProduct.id)">
+                        Eliminar
+                      </button> -->
+                    </div>
+                  </div>
+                </td>              
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer border-0">
+          <pagination-controls 
+        (pageChange)="p = $event" 
+        maxSize="5" 
+        responsive="true" 
+        previousLabel="Anterior"
+        nextLabel="Siguiente"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

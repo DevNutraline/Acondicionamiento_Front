@@ -1,0 +1,301 @@
+<ng-template #form let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{recipient.id?'Actualizar destinatario':'Registrar nuevo destinatario'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form">   
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-control-label">Nombre</label>
+              <input
+              placeholder="Nombre"
+              class="form-control form-control-alternative new-event--title"
+              type="text"
+              [(ngModel)]="recipient.name" 
+              [ngModelOptions]="{standalone: true}"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-control-label">Apellido</label>
+              <input
+              placeholder="Apellido"
+              class="form-control form-control-alternative new-event--title"
+              type="text"
+              [(ngModel)]="recipient.last_name" 
+              [ngModelOptions]="{standalone: true}"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-control-label">E-Mail</label>
+              <input
+              placeholder="E-Mail"
+              class="form-control form-control-alternative new-event--title"
+              type="text"
+              [(ngModel)]="recipient.email" 
+              [ngModelOptions]="{standalone: true}"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <label class="form-control-label">Informar inventario</label>
+            <div class="input-group">
+              <div class=" custom-control custom-radio mb-3">
+                <input 
+                (change)="radioCheck('inventario',1)"
+                [checked]="recipient.inventario==1?true:false"
+                class="custom-control-input"
+                id="customRadio0"
+                name="custom-radio-0"
+                type="radio"
+                />
+                <label class="custom-control-label" for="customRadio0">
+                  Sí
+                </label>
+              </div>
+              <div class=" custom-control custom-radio mb-3">
+                <input 
+                (change)="radioCheck('inventario',0)"
+                [checked]="recipient.inventario==0?true:false"
+                class="custom-control-input"
+                id="customRadio1"
+                name="custom-radio-0"
+                type="radio"
+                />
+                <label class="custom-control-label" for="customRadio1">
+                  No
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <label class="form-control-label">Informar OVA</label>
+            <div class="input-group">
+              <div class=" custom-control custom-radio mb-3">
+                <input 
+                (change)="radioCheck('ova',1)"
+                [checked]="recipient.ova==1?true:false"
+                class="custom-control-input"
+                id="customRadio2"
+                name="custom-radio-1"
+                type="radio"
+                />
+                <label class="custom-control-label" for="customRadio2">
+                  Sí
+                </label>
+              </div>
+              <div class=" custom-control custom-radio mb-3">
+                <input 
+                (change)="radioCheck('ova',0)"
+                [checked]="recipient.ova==0?true:false"
+                class="custom-control-input"
+                id="customRadio3"
+                name="custom-radio-1"
+                type="radio"
+                />
+                <label class="custom-control-label" for="customRadio3">
+                  No
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <label class="form-control-label">Informar Producto</label>
+            <div class="input-group">
+              <div class=" custom-control custom-radio mb-3">
+                <input 
+                (change)="radioCheck('product',1)"
+                [checked]="recipient.product==1?true:false"
+                class="custom-control-input"
+                id="customRadio4"
+                name="custom-radio-2"
+                type="radio"
+                />
+                <label class="custom-control-label" for="customRadio4">
+                  Sí
+                </label>
+              </div>
+              <div class=" custom-control custom-radio mb-3">
+                <input 
+                (change)="radioCheck('product',0)"
+                [checked]="recipient.product==0?true:false"
+                class="custom-control-input"
+                id="customRadio5"
+                name="custom-radio-2"
+                type="radio"
+                />
+                <label class="custom-control-label" for="customRadio5">
+                  No
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class=" modal-footer">
+      <button
+      class=" btn btn-primary new-event--add"
+      type="submit"
+      (click)="register()"
+      >
+      {{recipient.id?'Actualizar':'Registrar'}}
+    </button>
+    <button
+    (click)="modal.dismiss('Cross click')"
+    class=" btn btn-link ml-auto"
+    data-dismiss="modal"
+    type="button"
+    >
+    Cerrar
+  </button>
+</div>
+</ng-template>
+<div class=" header pb-6">
+  <div class=" container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">Destinatarios</h6>
+
+          <nav
+          aria-label="breadcrumb"
+          class=" d-none d-md-inline-block ml-md-4"
+          >
+          <ol class=" breadcrumb breadcrumb-links">
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> <i class="ni ni-ui-04"> </i> </a>
+            </li>
+
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> Notificaciones </a>
+            </li>
+
+            <li aria-current="page" class=" breadcrumb-item active">
+              Destinatarios
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="container-fluid mt--6">
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class=" col"><h3 class=" mb-0">Lista de destinatarios</h3></div>
+
+            <div class="col text-right">
+              <button class="btn btn-sm btn-primary" (click)="open(form)">
+                Crear nuevo
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar destinatario..." [(ngModel)]="searchTable">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('name')">Nombre</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('last_name')">Apellido</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('email')">Email</th>
+
+                <th class=" sort" data-sort="status" scope="col" (click)="sortTableBy('inventario')">Informar inventario</th>
+
+                <th class=" sort" data-sort="status" scope="col" (click)="sortTableBy('ova')">Informar ova</th>
+
+                <th class=" sort" data-sort="status" scope="col" (click)="sortTableBy('product')">Informar producto</th>
+
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+
+            <tbody class=" list">
+              <tr *ngFor="let recipient of  ( recipients | filterRecipient: searchTable ) | paginate: { itemsPerPage: 5, currentPage: p } ">
+                
+              <td class=" budget">{{recipient.name}}</td>
+
+              <td class=" budget">{{recipient.last_name}}</td>
+
+              <td class=" budget">{{recipient.email}}</td>
+
+              <td class=" budget">{{recipient.inventario==1?'Sí':'No'}}</td>
+
+              <td class=" budget">{{recipient.ova==1?'Sí':'No'}}</td>
+
+              <td class=" budget">{{recipient.product==1?'Sí':'No'}}</td>
+
+                    <td class=" text-right">
+                      <div dropdown class="dropdown no-caret">
+                        <a
+                        id="button-basic"
+                        dropdownToggle
+                        role="button"
+                        class="btn btn-sm btn-icon-only text-light dropdown-toggle"
+                        aria-controls="dropdown-basic"
+                        >
+                        <i class=" fas fa-ellipsis-v"> </i>
+                      </a>
+
+                      <div
+                      class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                      style="position: relative;z-index:10;"
+                      *dropdownMenu
+                      >
+                      <button class="dropdown-item" (click)="edit(recipient,form)">
+                        Editar
+                      </button>
+                      <button class="dropdown-item" (click)="delete(recipient.id)">
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+    </table>
+  </div>
+        <div class="card-footer border-0">
+               <pagination-controls 
+        (pageChange)="p = $event" 
+        maxSize="5" 
+        responsive="true" 
+        previousLabel="Anterior"
+        nextLabel="Siguiente"></pagination-controls>
+        </div>
+</div>
+</div>
+</div>
+</div>

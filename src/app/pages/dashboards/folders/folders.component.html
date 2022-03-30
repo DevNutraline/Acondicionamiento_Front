@@ -1,0 +1,308 @@
+<ng-template #form let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{folder.id?'Actualizar carpeta':'Registrar nueva carpeta'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form">   
+       <div class="row">
+        <div class="col-md-12">          
+          <div class="form-group">
+            <label class="form-control-label">Código de carpeta</label>
+            <input
+            placeholder="Código de carpeta"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="folder.cod_carpeta" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+      </div>
+      </form>
+    </div>
+    <div class=" modal-footer">
+      <button
+      class=" btn btn-primary new-event--add"
+      type="submit"
+      (click)="register()"
+      >
+      {{folder.id?'Actualizar':'Registrar'}}
+    </button>
+    <button
+    (click)="closeModal()"
+    class=" btn btn-link ml-auto"
+    data-dismiss="modal"
+    type="button"
+    >
+    Cerrar
+  </button>
+</div>
+</ng-template>
+<ng-template #datepicker let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Seleccione la fecha</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form">   
+       <div class="row">
+        <div class=" col-md-12">
+          <div class=" form-group">
+            <label class=" form-control-label" for="exampleDatepicker">
+              Seleccionar fecha
+            </label>
+            <input
+            type="text"
+            placeholder="Seleccionar fecha"
+            class="form-control"
+            [(ngModel)]="dateReleasedSale"
+            [ngModelOptions]="{standalone: true}"
+            bsDatepicker
+            [bsValue]="bsValue"
+            [bsConfig]="{isAnimated: true,containerClass:'theme-blue'}"
+          />
+        </div>
+      </div>
+      </div>
+      </form>
+    </div>
+    <div class=" modal-footer">
+      <button
+      class=" btn btn-primary new-event--add"
+      type="submit"
+      (click)="releaseForSale()"
+      >
+      Liberar a venta
+    </button>
+    <button
+    (click)="closeModal()"
+    class=" btn btn-link ml-auto"
+    data-dismiss="modal"
+    type="button"
+    >
+    Cerrar
+  </button>
+</div>
+</ng-template>
+<div class=" header pb-6">
+  <div class=" container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">Carpetas</h6>
+
+          <nav
+          aria-label="breadcrumb"
+          class=" d-none d-md-inline-block ml-md-4"
+          >
+          <ol class=" breadcrumb breadcrumb-links">
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> <i class=" ni ni-archive-2 "> </i> </a>
+            </li>
+
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> Acondicionamiento </a>
+            </li>
+
+            <li aria-current="page" class=" breadcrumb-item active">
+              Carpetas
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="container-fluid mt--6">
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class=" row align-items-center" style="margin-bottom: 10px;">
+            <div class=" col"><h3 class=" mb-0">Lista de carpetas</h3></div>
+
+            <div class="col text-right">
+              <!-- <button class="btn btn-sm btn-primary" (click)="open(form)">
+                Crear nuevo
+              </button> -->
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar carpeta..." [(ngModel)]="searchFolderTable">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('cod_carpeta')">
+                  Código de carpeta
+                </th>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('status')">
+                  Estado
+                </th>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('type')">
+                  Tipo
+                </th>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('created_at')">
+                  Fecha inicio
+                </th>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('closed_at')">
+                  Fecha cierre
+                </th>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('arrival_date')">
+                  Fecha de arribo
+                </th>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('ova_start_date')">Fecha inicio Ova
+                </th>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('ova_end_date')">
+                  Fecha fin Ova
+                </th>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('date_released_sale')">Fecha liberada a venta
+                </th>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('commercial_status')"> Estado comercial
+                </th>
+                
+
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+
+            <tbody class=" list">
+              <tr *ngFor="let folder of  ( folders | filterCarpeta: searchFolderTable ) | paginate: { id: 'pagination1',itemsPerPage: 5, currentPage: p1 } " (click)="selectFolder(folder)" style="cursor: pointer;">
+              <th scope="row">
+                <div class="media align-items-center">
+                  <div class="media-body">
+                    <span class="name mb-0 text-sm">
+                      <a href="javascript:void(0)" >{{folder.cod_carpeta}}</a>
+                    </span>
+                  </div>
+                </div>
+              </th>
+              <td class=" budget">{{folder.status}}</td>
+              <td class=" budget">{{folder.type}}</td>
+              <td class=" budget">{{formatDate(folder.created_at)}}</td>
+              <td class=" budget">{{folder.closed_at?formatDate(folder.closed_at):'La carpeta no ha sido cerrada'}}</td>
+              <td class=" budget">{{folder.arrival_date?formatDate(folder.arrival_date):'La carpeta no tiene fecha de arribo'}}</td>
+              <td class=" budget">{{folder.ova_start_date?formatDate(folder.ova_start_date):'La carpeta no ha iniciado en OVA'}}</td>
+              <td class=" budget">{{folder.ova_end_date?formatDate(folder.ova_end_date):'La carpeta no ha finalizado en OVA'}}</td>
+              <td class=" budget">{{folder.date_released_sale?formatDate(folder.date_released_sale):'La carpeta no ha sido liberada a venta'}}</td>
+              <td class=" budget">{{folder.commercial_status?folder.commercial_status:'Sin estado comercial registrado'}}</td>
+
+
+              <td class=" text-right">
+                <div dropdown class="dropdown no-caret">
+                  <a
+                  id="button-basic"
+                  dropdownToggle
+                  role="button"
+                  class="btn btn-sm btn-icon-only text-light dropdown-toggle"
+                  aria-controls="dropdown-basic"
+                  >
+                  <i class=" fas fa-ellipsis-v"> </i>
+                </a>
+
+                <div
+                class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                style="position: relative;z-index:10;"
+                *dropdownMenu
+                >
+                <button *ngIf="folder.closed_at"  class="dropdown-item" (click)="releaseForSaleForm(folder,datepicker)">
+                  Liberar a venta
+                </button>
+                <button class="dropdown-item" (click)="edit(folder,form)">
+                  Editar
+                </button>
+                <button class="dropdown-item" (click)="delete(folder.id)">
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer border-0">
+    <pagination-controls     
+      id="pagination1"
+        (pageChange)="p1 = $event" 
+        maxSize="5" 
+        responsive="true" 
+        previousLabel="Anterior"
+        nextLabel="Siguiente"></pagination-controls>
+  </div>
+</div>
+</div>
+</div>
+  <div class="row" *ngIf="products.length>0">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class="col"><h3 class=" mb-0">Lista de productos</h3></div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar Producto..." [(ngModel)]="searchProductTable">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col">Código SAP</th>
+                <th class=" sort" data-sort="budget" scope="col">Descripción</th>
+                <th class=" sort" data-sort="budget" scope="col">Código golden</th>
+                <th class=" sort" data-sort="budget" scope="col">Marca</th>
+                <th class=" sort" data-sort="budget" scope="col">Producto tipo OVA</th>
+                <th class=" sort" data-sort="budget" scope="col">Tipo proceso OVA</th>
+                <th class=" sort" data-sort="budget" scope="col">Versión</th>
+                <!-- <th class=" sort" data-sort="budget" scope="col" >Factura(s)</th> -->
+              </tr>
+            </thead>
+            <tbody class=" list">
+              <tr *ngFor="let product of ( products | filterProduct: searchProductTable ) | paginate: { id: 'pagination2',itemsPerPage: 5, currentPage: p2 } ">
+                <td class=" budget">{{product.cod_sap}}</td>
+                <td class=" budget">{{product.descriptions}}</td>
+                <td class=" budget">{{product.codgf}}</td>
+                <td class=" budget">{{product.product_brand.name}}</td>
+                <td class=" budget">{{product.ova_product_type?product.ova_product_type.name:'Sin producto tipo OVA registrado'}}</td>
+                <td class=" budget">{{product.ova_process_type?product.ova_process_type.descriptions:'Sin proceso tipo OVA registrado'}}</td>
+                <td class=" budget">{{product.versions.length}}</td>
+                <!-- <td class=" budget">
+                  <ng-container *ngFor="let productInvoice of product.product_invoice; index as i;">
+                    {{productInvoice.factura.folioNum}} <span *ngIf="i+1 != product.product_invoice.length">,</span>
+                  </ng-container>
+                </td> -->
+              </tr>
+            </tbody>
+    </table>
+  </div>
+        <div class="card-footer border-0">
+          <pagination-controls 
+          id="pagination2"
+        (pageChange)="p2 = $event" 
+        maxSize="5" 
+        responsive="true" 
+        previousLabel="Anterior"
+        nextLabel="Siguiente"></pagination-controls>
+        </div>
+</div>
+</div>
+  </div>
+</div>

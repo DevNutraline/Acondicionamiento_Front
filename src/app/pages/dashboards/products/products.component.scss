@@ -1,0 +1,23 @@
+.items-list {
+  
+  ul {
+    padding: 0px;
+    list-style-type: none;
+    width: 100%;
+    height: auto;
+
+    li {
+      cursor: pointer;
+      padding: 10px 0;
+      transition: margin-left 0.3s linear, font-weight 0.2s linear, color 0.3s linear;
+      -webkit-transition: margin-left 0.3s linear, font-weight 0.2s linear, color 0.3s linear;
+      -moz-transition: margin-left 0.3s linear, font-weight 0.2s linear, color 0.3s linear;
+      -o-transition: margin-left 0.3s linear, font-weight 0.2s linear, color 0.3s linear;
+      -ms-transition: margin-left 0.3s linear, font-weight 0.2s linear, color 0.3s linear;
+    }
+    li:hover {
+      border-top: 1px solid #f5365c;
+      background-color: #f8f9fe;
+    }
+  } 
+}

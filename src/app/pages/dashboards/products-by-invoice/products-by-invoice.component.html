@@ -1,0 +1,377 @@
+<ng-template #errorlist let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Lista de errores en procesado por lote</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeListErrors()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col">Código SAP</th>
+
+                <th class=" sort" data-sort="budget" scope="col">Descripción</th>  
+
+                <th class=" sort" data-sort="budget" scope="col">Error</th>               
+              </tr>
+            </thead>
+            <tbody class=" list">
+              <tr *ngFor="let error of  errorMessages">
+                <td class=" budget">
+                  {{error.element.product_reception.product.cod_sap}}
+                </td>                              
+                <td class=" budget">
+                  {{error.element.product_reception.product.descriptions}}
+                </td>              
+                <td class=" budget">
+                  {{error.content}}
+                </td>                
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  </div>
+    <div class=" modal-footer">
+      <button
+        (click)="closeListErrors()"
+        class=" btn btn-link ml-auto"
+        data-dismiss="modal"
+        type="button"
+        >
+        Cerrar
+      </button>
+    </div>
+</ng-template>
+<ng-template #previewlist let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Preview</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeListPreviews()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+
+  </div>
+  <div class="modal-body">
+    <div class="card">
+        <div class="card-header border-0">
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar elemento en preview..." [(ngModel)]="searchPreviewTable">
+            </div>
+          </div>
+        </div>
+      <div class=" table-responsive">
+            <table class=" table align-items-center table-flush">
+              <thead class=" thead-light">
+                <tr>
+                  <th class=" sort" data-sort="name" scope="col">Código SAP de producto</th>  
+                  <th class=" sort" data-sort="name" scope="col">Versión de producto</th>  
+                  <th class=" sort" data-sort="name" scope="col">Status</th>             
+                </tr>
+              </thead>
+              <tbody class=" list">
+                <tr *ngFor="let preview of ( previewsBatchReceived | filterPreviewProductReception: searchPreviewTable ) ">
+                  <td class=" budget">
+                    {{preview.product_received_by_version.product_reception.product?preview.product_received_by_version.product_reception.product.cod_sap:'Sin producto registrado'}}
+                  </td>   
+                  <td class=" budget">
+                    {{preview.product_received_by_version.version?preview.product_received_by_version.version.name:'Sin versión de producto registrada'}}
+                  </td>   
+                  <td class=" budget" [style.color]="getStatusColor(preview.status)">
+                    {{preview.status}}
+                  </td>                
+                </tr>
+              </tbody>
+            </table>
+      </div>
+    </div>
+  </div>
+    <div class=" modal-footer">
+      <button
+        (click)="confirmSave(confirmTemplate)"
+        class="btn btn-sm btn-primary"
+        data-dismiss="modal"
+        type="button"
+        >
+        Guardar y enviar
+      </button>
+      <button
+        (click)="closeListPreviews()"
+        class=" btn btn-link ml-auto"
+        data-dismiss="modal"
+        type="button"
+        >
+        Cerrar
+      </button>
+    </div>
+</ng-template>
+<ng-template #confirmTemplate let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Confirmar y enviar</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeConfirmSave()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+     <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Código de confirmación</label>
+            <input disabled class="form-control form-control-alternative new-event--title" value="{{confirm.code}}">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Código</label>
+            <input
+            placeholder="Ingrese código de confirmación"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="confirm.input" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+          <div class="col-md-6">
+            <div class="form-group">
+            <label class="form-control-label">Cerrar carpeta</label>
+            <div class="input-group">
+              <div class=" custom-control custom-radio mb-3">
+                <input 
+                (change)="radioCheck('closed',1)"
+                [checked]="false"
+                class="custom-control-input"
+                id="customRadio0"
+                name="custom-radio-0"
+                type="radio"
+                />
+                <label class="custom-control-label" for="customRadio0">
+                  Sí
+                </label>
+              </div>
+              <div class=" custom-control custom-radio mb-3">
+                <input 
+                (change)="radioCheck('closed',0)"
+                [checked]="true"
+                class="custom-control-input"
+                id="customRadio1"
+                name="custom-radio-0"
+                type="radio"
+                />
+                <label class="custom-control-label" for="customRadio1">
+                  No
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+    <div class=" modal-footer">
+      <button
+        class=" btn btn-primary new-event--add"
+        type="submit"
+        (click)="confirmCode()"
+        >
+        Confirmar
+      </button>
+      <button
+        (click)="closeConfirmSave()"
+        class=" btn btn-link ml-auto"
+        data-dismiss="modal"
+        type="button"
+        >
+        Cerrar
+      </button>
+    </div>
+</ng-template>
+<div class=" header pb-6">
+  	<div class=" container-fluid">
+    <div class=" header-body">
+	    <div class=" row align-items-center py-4">
+	        <div class=" col-lg-12 col-12">
+	          	<h6 class=" h2 d-inline-block mb-0">Proceso Ova</h6>
+	          	<nav
+		          aria-label="breadcrumb"
+		          class=" d-none d-md-inline-block ml-md-4"
+		          >
+		          <ol class=" breadcrumb breadcrumb-links">
+		            <li class=" breadcrumb-item">
+		              <a href="javascript:void(0)"> <i class=" fas fa-home"> </i> </a>
+		            </li>
+
+		            <li class=" breadcrumb-item">
+		              <a href="javascript:void(0)"> Dashboards </a>
+		            </li>
+
+		            <li aria-current="page" class=" breadcrumb-item active">
+		              Proceso Ova
+		            </li>
+		          </ol>
+		        </nav>
+	      	</div>
+	    </div>
+  	</div>
+	</div>
+</div>
+<div class="container-fluid mt--6" >
+  <div class="row" *ngIf="factura">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class="col"><h3 class=" mb-0">Lista de productos de la factura {{factura.folioNum}}</h3></div>
+            <div class="col text-right">
+              <button class="btn btn-sm btn-primary" (click)="showLastPreview(previewlist)">
+                <i class="fas fa-exclamation"></i>
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar Producto..." [(ngModel)]="searchTable">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('cod_sap')">Código SAP</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('descriptions')">Descripción</th>
+                
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('original_quantity')">
+                  Cantidad original
+                </th>
+
+                <th class=" sort" data-sort="budget" scope="col">
+                  Cantidad recepcionada
+                </th>
+
+                <th class=" sort" data-sort="budget" scope="col">
+                  Total de procesada
+                </th>
+
+                <th class=" sort" data-sort="budget" scope="col">
+                  Cantidad a procesar
+                </th>
+                
+                <th class=" sort" data-sort="budget" scope="col">
+                  Versión de producto
+                </th>                
+                
+                <th class=" sort" data-sort="budget" scope="col">
+                  Estado
+                </th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('product_type_ova')">Producto tipo OVA</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('ova_process_type')">Tipo proceso OVA</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('lot')">Lote</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('product_brand')">Marca</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('factura_folio_num')">Número de folio de factura</th>
+
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('versions')">Versión</th>
+              </tr>
+            </thead>
+            <tbody class=" list">
+              <tr *ngFor="let productReceived of ( factura.products_received_by_version | filterProductReception: searchTableProducto ) | paginate: { itemsPerPage: 5, currentPage: pProducto } ;index as j">
+                <td class=" budget">{{productReceived.product_reception.product.cod_sap}}</td>
+                <td class=" budget">{{productReceived.product_reception.product.descriptions}}</td>
+                
+                <td class=" budget">{{productReceived.product_reception.quantity?productReceived.product_reception.quantity:'Sin cantidad original registrada'}}</td>
+                
+                <td class=" budget">
+                  {{getQuantityReceived(j)}}<!--cantidad recepcionada-->                    
+                  </td>
+                <td class=" budget">
+                  {{productReceived.quantity_received}}<!--total de procesados-->
+                </td>                
+                <td class=" budget">
+                  <input 
+                  type="number" 
+                  name="" 
+                  [disabled]="folderClosed"
+                  [(ngModel)]="productReceived.quantity_process" 
+                  [ngModelOptions]="{standalone: true}"
+                  >
+                  <!-- <button [disabled]="productReceived.quantity_process<=0" (click)="processUnit(j,productReceived.id_product_reception,productReceived.version,productReceived.quantity_received,productReceived.quantity_process)" type="button" class="btn btn-sm mr-0">
+                    <i class=" fas fa-check"> </i>
+                  </button> -->
+                </td>
+                <td class=" budget" >
+                  {{productReceived.version?productReceived.version.name:'Sin versión de producto'}}
+                </td>
+                <td class=" budget" [style.color]="getStatusColor(productReceived.status)">
+                  {{productReceived.status?productReceived.status:'Sin estado'}}
+                </td>
+                <td class=" budget">
+                  {{productReceived.product_reception.product_type_o_v_a?productReceived.product_reception.product_type_o_v_a.name:'Sin producto tipo OVA'}}
+                </td>
+                <td class=" budget">
+                  {{productReceived.product_reception.ova_process_type?productReceived.product_reception.ova_process_type.name:'Sin proceso tipo OVA'}}
+                </td>
+                <td class=" budget">
+                  {{productReceived.product_reception.lot?productReceived.product_reception.lot.name:'Sin lote'}}
+                </td>
+                <td class=" budget">{{productReceived.product_reception.product.product_brand.name}}</td>
+                
+
+                <td class=" budget">{{factura?factura.folioNum:'Sin factura registrada'}}</td>
+
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">
+                      <a href="javascript:void(0)">{{productReceived.product_reception.product.versions.length}}</a>
+                      </span>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer border-0">
+          <div class="row">
+            <div class="col-md-6">              
+              <pagination-controls 
+                (pageChange)="p = $event" 
+                maxSize="5" 
+                responsive="true" 
+                previousLabel="Anterior"
+                nextLabel="Siguiente">
+              </pagination-controls>
+            </div>
+            <div class="col-md-6" style="text-align: right;">
+              <!-- <button
+                (click)="confirmSave(confirmTemplate)"
+                class="btn btn-sm btn-primary ml-auto"
+                data-dismiss="modal"
+                type="button"
+                >
+                Guardar y enviar
+              </button> -->
+              <button class="btn btn-sm btn-primary" 
+              (click)="confirmPreviewBatchReceived()"
+              >
+                Previsualizar
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

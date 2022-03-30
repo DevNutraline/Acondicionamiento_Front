@@ -1,0 +1,258 @@
+<ng-template #form let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{supplieInventory.id?'Actualizar '+movement+' de insumo':'Registrar nuevo '+movement+' de insumo'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form">   
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Insumo</label>
+            <div class="input-group">
+              <ngx-select-dropdown 
+              [(ngModel)]="supplieSelected" [ngModelOptions]="{standalone: true}"
+              (change)="selectionChanged($event,'insumo')" 
+              [multiple]="false" 
+              [config]="supplieConfig" 
+              [options]="supplies" 
+              ngDefaultControl 
+              class="w-100 h-100"
+              ></ngx-select-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="form-control-label">Versión de Insumo</label>
+            <div class="input-group">
+              <ngx-select-dropdown 
+              [(ngModel)]="supplieVersionSelected" [ngModelOptions]="{standalone: true}"
+              (change)="selectionChanged($event,'version_insumo')" 
+              [multiple]="false" 
+              [config]="supplieVersionConfig" 
+              [options]="suppliesVersions" 
+              ngDefaultControl 
+              class="w-100 h-100"
+              ></ngx-select-dropdown>
+            </div>
+          </div>
+        </div>
+      </div>   
+      <div class="row">
+        <div class="col-md-12">          
+          <div class="form-group">
+            <label class="form-control-label">Cantidad</label>
+            <input
+              placeholder="Cantidad"
+              class="form-control form-control-alternative new-event--title"
+              type="text"
+              [(ngModel)]="supplieInventory.cantidad" 
+              [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="form-group">
+            <label class="form-control-label">Documento de origen</label>
+            <input
+            placeholder="Documento de origen"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieInventory.doc_origen" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="form-control-label">Documento PDF</label>
+            <div class="button-wrapper">
+              <span class="label">
+                {{nameFile}}
+              </span>
+              
+                <input type="file" name="file" id="upload" class="upload-box" placeholder="Upload File" accept=".pdf" (change)="fileProgress($event)">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-control-label">Observación</label>
+            <input
+            placeholder="Observación"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="supplieInventory.observations" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+      </div>
+      </form>
+    </div>
+    <div class=" modal-footer">
+      <button
+      class=" btn btn-primary new-event--add"
+      type="submit"
+      (click)="register()"
+      >
+      {{supplieInventory.id?'Actualizar':'Registrar'}}
+    </button>
+    <button
+    (click)="modal.dismiss('Cross click')"
+    class=" btn btn-link ml-auto"
+    data-dismiss="modal"
+    type="button"
+    >
+    Cerrar
+  </button>
+</div>
+</ng-template>
+<div class=" header pb-6">
+  <div class=" container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">Inventario de insumos</h6>
+
+          <nav
+          aria-label="breadcrumb"
+          class=" d-none d-md-inline-block ml-md-4"
+          >
+          <ol class=" breadcrumb breadcrumb-links">
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)">  <i class="ni ni-bullet-list-67"> </i> </a>
+            </li>
+
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> Insumos </a>
+            </li>
+
+            <li aria-current="page" class=" breadcrumb-item active">
+              Inventario de insumos
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="container-fluid mt--6">
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class=" col-md-4"><h3 class=" mb-0">Lista de inventario de insumos</h3></div>
+
+            <div class="col-md-8 text-right">              
+              <a class="btn btn-sm btn-primary" [routerLink]="['../supplie-inventory-comparative']">
+                Comparativa SAP
+              </a>
+              <a class="btn btn-sm btn-primary" [routerLink]="['../movement-history']">
+                Ver historial de movimientos
+              </a>
+              <button class="btn btn-sm btn-primary" (click)="open(form,'ingreso')">
+                Ingreso
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="open(form,'egreso')">
+                Egreso
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar inventario de insumo..." [(ngModel)]="searchTable">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('cod_interno')">Código interno</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('cod_sap')">Código SAP</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('descriptions')">Descripción</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('version_insumo')">Versión de Insumo</th>
+
+                <th class=" sort" data-sort="status" scope="col" (click)="sortTableBy('tamano')">Tamaño</th>
+
+                <th class=" sort" data-sort="status" scope="col" (click)="sortTableBy('cantidad')">Cantidad</th>
+
+                <!--<th scope="col">Acción</th>-->
+              </tr>
+            </thead>
+
+            <tbody class=" list">
+              <tr *ngFor="let supplieInventory of ( suppliesInventory | filterSupplieInventory: searchTable )  | paginate: { itemsPerPage: 5, currentPage: p } ">
+              <td class=" budget">{{supplieInventory.insumo.cod_interno}}</td>
+
+              <td class=" budget">{{supplieInventory.insumo.cod_sap!='undefined'?supplieInventory.insumo.cod_sap:'Sin código'}}</td>
+
+              <td class=" budget">{{supplieInventory.insumo.descriptions}}</td>
+              
+              <td class=" budget">{{supplieInventory.version_insumo.nombre}}</td>
+
+              <td class=" budget">{{supplieInventory.insumo.tamano}}</td>
+
+              <td class=" budget">{{supplieInventory.cantidad}}</td>
+
+              <!--<td class=" text-right">
+                <div dropdown class="dropdown no-caret">
+                  <a
+                  id="button-basic"
+                  dropdownToggle
+                  role="button"
+                  class="btn btn-sm btn-icon-only text-light dropdown-toggle"
+                  aria-controls="dropdown-basic"
+                  >
+                  <i class=" fas fa-ellipsis-v"> </i>
+                </a>
+
+                <div
+                class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                style="position: relative;z-index:10;"
+                *dropdownMenu
+                >
+                <button class="dropdown-item" (click)="edit(supplieInventory,form)">
+                  Editar
+                </button>
+                <button class="dropdown-item" (click)="delete(supplieInventory.id)">
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </td>-->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+          <div class="card-footer border-0">
+            <pagination-controls 
+        (pageChange)="p = $event" 
+        maxSize="5" 
+        responsive="true" 
+        previousLabel="Anterior"
+        nextLabel="Siguiente"></pagination-controls>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

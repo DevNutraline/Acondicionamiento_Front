@@ -1,0 +1,177 @@
+<ng-template #form let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{productTypeOVA.id?'Actualizar producto tipo OVA':'Registrar nuevo producto tipo OVA'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form"> 
+      <div class="row">
+        <div class="col-md-12">          
+          <div class="form-group">
+            <label class="form-control-label">Nombre</label>
+            <input
+              placeholder="Nombre"
+              class="form-control form-control-alternative new-event--title"
+              type="text"
+              [(ngModel)]="productTypeOVA.name" 
+              [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="form-control-label">Descripción</label>
+            <input
+            placeholder="Descripción"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="productTypeOVA.descriptions" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+      </div>
+      </form>
+    </div>
+    <div class=" modal-footer">
+      <div class="d-flex w-100">
+        <div class="mr-auto">
+          <button
+            (click)="modal.dismiss('Cross click')"
+            class=" btn btn-link ml-auto"
+            data-dismiss="modal"
+            type="button"
+            >
+            Cerrar
+          </button>
+        </div>
+        <div class="ml-auto">          
+          <button
+            class=" btn btn-primary new-event--add"
+            type="submit"
+            (click)="register()"
+            >
+            {{productTypeOVA.id?'Actualizar':'Registrar'}}
+          </button>
+        </div>
+      </div>
+</div>
+</ng-template>
+<div class=" header pb-6">
+  <div class=" container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">Producto tipo OVA</h6>
+          <nav
+          aria-label="breadcrumb"
+          class=" d-none d-md-inline-block ml-md-4"
+          >
+          <ol class=" breadcrumb breadcrumb-links">
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> <i class=" ni ni-archive-2 "> </i> </a>
+            </li>
+
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> Acondicionamiento </a>
+            </li>
+
+            <li aria-current="page" class=" breadcrumb-item active">
+              Producto tipo OVA
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="container-fluid mt--6">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class="col"><h3 class=" mb-0">Lista de producto tipo OVAs</h3></div>
+            
+            <div class="col text-right">
+              <button class="btn btn-sm btn-primary" (click)="open(form)">
+                Crear nuevo
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar producto tipo OVA..." [(ngModel)]="searchTable">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('name')">Nombre</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('descriptions')">Descripción</th>
+
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+            <tbody class=" list">
+              <tr *ngFor="let productTypeOVA of ( productTypeOVAs | filterProductTypeOVA: searchTable ) | paginate: { itemsPerPage: 5, currentPage: p } ">
+
+                <td class=" budget">
+                  {{productTypeOVA.name}}
+                </td>
+                <td class=" budget">
+                  {{productTypeOVA.descriptions}}
+                </td>
+
+                <td class=" text-right">
+                  <div dropdown class="dropdown no-caret">
+                    <a
+                      id="button-basic"
+                      dropdownToggle
+                      role="button"
+                      class="btn btn-sm btn-icon-only text-light dropdown-toggle"
+                      aria-controls="dropdown-basic"
+                      >
+                      <i class=" fas fa-ellipsis-v"> </i>
+                    </a>
+                    <div
+                      class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                      style="position: relative;z-index:10;"
+                      *dropdownMenu
+                      >
+                      <button class="dropdown-item" (click)="edit(productTypeOVA,form)">
+                        Editar
+                      </button>
+                      <button class="dropdown-item" (click)="delete(productTypeOVA.id)">
+                        Eliminar
+                      </button>
+                    </div>
+                  </div>
+                </td>              
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer border-0">
+          <pagination-controls 
+        (pageChange)="p = $event" 
+        maxSize="5" 
+        responsive="true" 
+        previousLabel="Anterior"
+        nextLabel="Siguiente"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

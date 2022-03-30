@@ -1,0 +1,327 @@
+<ng-template #folderForm let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{folderSelected.id?'Actualizar carpeta':'Registrar nueva carpeta'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeFormModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form">   
+       <div class="row">
+        <div class="col-md-12">          
+          <div class="form-group">
+            <label class="form-control-label">Código de carpeta</label>
+            <input
+            placeholder="Código de carpeta"
+            class="form-control form-control-alternative new-event--title"
+            type="text"
+            [(ngModel)]="folderSelected.cod_carpeta" 
+            [ngModelOptions]="{standalone: true}"
+            />
+          </div>
+        </div>
+      </div>
+      </form>
+    </div>
+    <div class=" modal-footer">
+      <button
+      class=" btn btn-primary new-event--add"
+      type="submit"
+      (click)="updateFolder()"
+      >
+      {{folderSelected.id?'Actualizar':'Registrar'}}
+    </button>
+    <button
+    (click)="closeFormModal()"
+    class=" btn btn-link ml-auto"
+    data-dismiss="modal"
+    type="button"
+    >
+    Cerrar
+  </button>
+</div>
+</ng-template>
+<div class=" header pb-6">
+  <div class=" container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">Ova</h6>
+          <nav
+          aria-label="breadcrumb"
+          class=" d-none d-md-inline-block ml-md-4"
+          >
+          <ol class=" breadcrumb breadcrumb-links">
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> <i class="ni ni-ui-04"> </i> </a>
+            </li>
+
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> Proceso OVA </a>
+            </li>
+
+            <li aria-current="page" class=" breadcrumb-item active">
+              Ova
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="container-fluid mt--6" >
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class=" row align-items-center" style="margin-bottom: 10px;">
+            <div class=" col"><h3 class=" mb-0">Lista de carpetas</h3></div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar carpeta..." [(ngModel)]="searchTable">
+            </div>
+          </div>
+        </div>
+            <div class=" table-responsive">
+              <table class=" table align-items-center table-flush">
+                <thead class=" thead-light">
+                  <tr>
+                    <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('cod_carpeta')">
+                      Código de carpeta
+                    </th>
+                    <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('status')">
+                      Estado
+                    </th>
+                    <th class=" sort" data-sort="name" scope="col">
+                      Prioridad
+                    </th>
+                    <th class=" sort" data-sort="name" scope="col">
+                      Fecha estimación Inicio OVA
+                    </th>
+                    <th class=" sort" data-sort="name" scope="col">
+                      Fecha Estimada Término OVA
+                    </th>
+                    <!-- <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('type')">Tipo</th>
+                    <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('created_at')">Fecha inicio</th>
+                    <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('closed_at')">Fecha cierre</th>
+                    <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('arrival_date')">Fecha de arribo</th>
+                    <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('ova_start_date')">Fecha inicio Ova</th>
+                    <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('ova_end_date')">Fecha fin Ova</th>
+                    <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('date_released_sale')">Fecha liberada a venta</th>
+                    <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('commercial_status')">Estado comercial</th> -->
+                  </tr>
+                </thead>
+
+                <tbody class=" list">
+                  <!-- <tr *ngFor="let folder of  ( folders | filterCarpeta: searchTable ) | paginate: { id: 'pagination1', itemsPerPage: 5, currentPage: pFolder } " (click)="selectFolder(folder)" style="cursor: pointer;"> -->
+                  <tr *ngFor="let folder of  ( folders | filterCarpeta: searchTable ) | paginate: { id: 'pagination1', itemsPerPage: 5, currentPage: pFolder } " >
+                  <th scope="row" (click)="navigateTo(['dashboards/products-by-folder',folder.id])" style="cursor: pointer;">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        <span class="name mb-0 text-sm">
+                        <a href="javascript:void(0)" >{{folder.cod_carpeta}}</a>
+                        </span>
+                      </div>
+                    </div>
+                  </th>
+                  <td class=" budget" (click)="navigateTo(['dashboards/products-by-folder',folder.id])" style="cursor: pointer;">
+                    {{folder.status}}
+                  </td>                  
+                  <td>
+                    <div class="d-flex">
+                      <div style="width: 90%;">
+                          <!-- class="form-control" -->
+                        <input
+                          type="text"
+                          placeholder="Prioridad"
+                          [(ngModel)]="folder.priority"
+                          [ngModelOptions]="{standalone: true}">
+                      </div>
+                      <div style="width: 10%;">
+                        <button 
+                          (click)="processPriority(folder.id,folder.priority)" 
+                          type="button" 
+                          class="btn btn-sm mr-0 w-100 h-100">
+                            <i class=" fas fa-check"> </i>
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex">
+                      <div style="width: 90%;">
+                          <!-- class="form-control" -->
+                        <input
+                          type="text"
+                          placeholder="Seleccionar fecha"
+                          value="{{ folder.ova_start_estimated_date | date:'yyyy-MM-dd' }}"
+                          [(ngModel)]="folder.ova_start_estimated_date"
+                          [ngModelOptions]="{standalone: true}"
+                          bsDatepicker
+                          [bsValue]="bsValue"
+                          [bsConfig]="{
+                            isAnimated: true,containerClass:'theme-blue',
+                            dateInputFormat: 'YYYY-mm-DD'
+                          }">
+                      </div>
+                      <div style="width: 10%;">
+                        <button 
+                          (click)="processEstimatedDate(folder.id,'start',folder.ova_start_estimated_date)" 
+                          type="button" 
+                          class="btn btn-sm mr-0 w-100 h-100">
+                            <i class=" fas fa-check"> </i>
+                        </button>
+                      </div>
+                    </div>                      
+                  </td> 
+                  <td>
+                    <div class="d-flex">
+                      <div style="width: 90%;">
+                          <!-- class="form-control" -->
+                        <input
+                          type="text"
+                          placeholder="Seleccionar fecha"
+                          value="{{ folder.ova_end_estimated_date | date:'yyyy-MM-dd' }}"
+                          [(ngModel)]="folder.ova_end_estimated_date"
+                          [ngModelOptions]="{standalone: true}"
+                          bsDatepicker
+                          [bsValue]="bsValue"
+                          [bsConfig]="{
+                            isAnimated: true,containerClass:'theme-blue',
+                            dateInputFormat: 'YYYY-mm-DD'
+                          }">
+                      </div>
+                      <div style="width: 10%;">
+                        <button 
+                          (click)="processEstimatedDate(folder.id,'end',folder.ova_end_estimated_date)" 
+                          type="button" 
+                          class="btn btn-sm mr-0 w-100 h-100">
+                            <i class=" fas fa-check"> </i>
+                        </button>
+                      </div>
+                    </div>
+                  </td> 
+ 
+                  <!-- <td class=" budget">{{folder.type}}</td>
+                  <td class=" budget">{{formatDate(folder.created_at)}}</td>
+                  <td class=" budget">{{folder.closed_at?formatDate(folder.closed_at):'La carpeta no ha sido cerrada'}}</td>
+                  <td class=" budget">{{folder.arrival_date?formatDate(folder.arrival_date):'La carpeta no tiene fecha de arribo'}}</td>
+                  <td class=" budget">{{folder.ova_start_date?formatDate(folder.ova_start_date):'La carpeta no ha iniciado en OVA'}}</td>
+                  <td class=" budget">{{folder.ova_end_date?formatDate(folder.ova_end_date):'La carpeta no ha finalizado en OVA'}}</td>
+                  <td class=" budget">{{folder.date_released_sale?formatDate(folder.date_released_sale):'La carpeta no ha sido liberada a venta'}}</td>
+                  <td class=" budget">{{folder.commercial_status?folder.commercial_status:'Sin estado comercial registrado'}}</td> -->
+
+
+
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="card-footer border-0" *ngIf="facturasSelected.length==0">
+          <pagination-controls
+              id="pagination1"
+              (pageChange)="paginationChange($event,'folder')" 
+              maxSize="5" 
+              responsive="true" 
+              previousLabel="Anterior"
+              nextLabel="Siguiente"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div *ngIf="facturasSelected.length>0" class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class="col"><h3 class=" mb-0">Lista de facturas</h3></div>
+            <div class="col text-right">
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="closeInvoices()">
+                Cerrar
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar factura..." [(ngModel)]="searchTableFactura">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('folio_num')">
+                  Número de folio 
+                </th>
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('doc_date')">
+                  DocDate
+                </th>
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('card_code')">
+                  Código de tarjeta
+                </th>
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('card_name')">
+                  Nombre de tarjeta
+                </th>
+                <th scope="col">
+                  Acción
+                </th>
+              </tr>
+            </thead>
+            <tbody class=" list">
+              <tr *ngFor="let factura of ( facturasSelected | filterFactura:searchTableFactura ) | paginate: { id: 'pagination2', itemsPerPage: 5, currentPage: pFactura };index as i ">
+                <td class=" budget">{{factura.folioNum}}</td>
+                <td class=" budget">{{factura.docDate}}</td>
+                <td class=" budget">{{factura.cardCode}}</td>
+                <td class=" budget">{{factura.cardName}}</td>
+                <td class=" text-right">
+                    <div dropdown class="dropdown no-caret">
+                      <a
+                      id="button-basic"
+                      dropdownToggle
+                      role="button"
+                      class="btn btn-sm btn-icon-only text-light dropdown-toggle"
+                      aria-controls="dropdown-basic"
+                      >
+                      <i class=" fas fa-ellipsis-v"> </i>
+                    </a>
+
+                    <div
+                    class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                    style="position: relative;z-index:10;"
+                    *dropdownMenu
+                    >
+                    <button class="dropdown-item" (click)="navigateTo(['dashboards/products-by-invoice/',factura.id])">
+                      Ir a OVA
+                    </button>
+                  </div>
+                </div>
+              </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer border-0">
+          <div class="row">
+            <div class="col-md-12">              
+              <pagination-controls
+                id="pagination2"
+                (pageChange)="paginationChange($event,'factura')" 
+                maxSize="5" 
+                responsive="true" 
+                previousLabel="Anterior"
+                nextLabel="Siguiente">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</div>

@@ -1,0 +1,112 @@
+<div class=" header pb-6">
+  <div class=" container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">Comparativa SAP</h6>
+
+          <nav
+          aria-label="breadcrumb"
+          class=" d-none d-md-inline-block ml-md-4"
+          >
+            <ol class=" breadcrumb breadcrumb-links">
+              <li class=" breadcrumb-item">
+                <a href="javascript:void(0)"> <i class=" fas fa-home"> </i> </a>
+              </li>
+
+              <li class=" breadcrumb-item">
+                <a href="javascript:void(0)"> Dashboards </a>
+              </li>
+
+              <li aria-current="page" class=" breadcrumb-item active">
+                Comparativa SAP
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--6">
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class=" col-md-4"><h3 class=" mb-0">Lista de comparativa inventario de insumos local y SAP</h3></div>
+
+           <div class="col-md-8 text-right"> 
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="confirmSendReport()">
+                Enviar Reporte
+              </button>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar inventario de insumo..." [(ngModel)]="searchTable">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('cod_interno')">Código interno</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('cod_sap')">Código SAP</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('descriptions')">Descripción</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('version_insumo')">Versión de Insumo</th>
+
+                <th class=" sort" data-sort="status" scope="col" (click)="sortTableBy('tamano')">Tamaño</th>
+
+                <th class=" sort" data-sort="status" scope="col" (click)="sortTableBy('cantidad')">Cantidad Local</th>
+
+                <th class=" sort" data-sort="status" scope="col" (click)="sortTableBy('cantidad_sap')">Cantidad SAP</th>
+
+                <th class=" sort" data-sort="status" scope="col" (click)="sortTableBy('difference_quantities')">Cantidad Total</th>
+                <!--<th scope="col">Acción</th>-->
+              </tr>
+            </thead>
+
+            <tbody class=" list">
+              <tr *ngFor="let supplieInventoryComparative of ( suppliesInventoryComparative | filterSupplieInventoryComparative: searchTable )  | paginate: { itemsPerPage: 5, currentPage: p } ">
+
+              <td class=" budget">{{supplieInventoryComparative.supplie_inventory.insumo.cod_interno}}</td>   
+
+              <td class=" budget">{{supplieInventoryComparative.supplie_inventory.insumo.cod_sap!='undefined'?supplieInventoryComparative.supplie_inventory.insumo.cod_sap:'Sin código'}}</td>     
+
+              <td class=" budget">{{supplieInventoryComparative.supplie_inventory.insumo.descriptions}}</td>
+              
+              <td class=" budget">{{supplieInventoryComparative.supplie_inventory.version_insumo.nombre}}</td>
+
+              <td class=" budget">{{supplieInventoryComparative.supplie_inventory.insumo.tamano}}</td>
+
+              <td class=" budget">{{supplieInventoryComparative.supplie_inventory.cantidad}}</td>
+
+              <td class=" budget">{{supplieInventoryComparative.cantidad_sap}}</td>
+
+              <td class=" budget">{{supplieInventoryComparative.difference_quantities}}</td>
+            </tr>
+      </tbody>
+    </table>
+  </div>
+          <div class="card-footer border-0">
+            <pagination-controls 
+        (pageChange)="p = $event" 
+        maxSize="5" 
+        responsive="true" 
+        previousLabel="Anterior"
+        nextLabel="Siguiente"></pagination-controls>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

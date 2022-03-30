@@ -1,0 +1,272 @@
+<ng-template #form let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{rol.id?'Actualizar rol':'Registrar nuevo rol'}}</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #userForm="ngForm" class="new-event--form">   
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-control-label">Nombre</label>
+              <input
+              placeholder="Nombre"
+              class="form-control form-control-alternative new-event--title"
+              type="text"
+              [(ngModel)]="rol.name" 
+              [ngModelOptions]="{standalone: true}"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-control-label">Descripción</label>
+              <input
+              placeholder="Descripción"
+              class="form-control form-control-alternative new-event--title"
+              type="text"
+              [(ngModel)]="rol.descriptions" 
+              [ngModelOptions]="{standalone: true}"
+              />
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class=" modal-footer">
+      <button
+      class=" btn btn-primary new-event--add"
+      type="submit"
+      (click)="register()"
+      >
+      {{rol.id?'Actualizar':'Registrar'}}
+    </button>
+    <button
+    (click)="modal.dismiss('Cross click')"
+    class=" btn btn-link ml-auto"
+    data-dismiss="modal"
+    type="button"
+    >
+    Cerrar
+  </button>
+</div>
+</ng-template>
+<ng-template #permisions let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Selecciona los permisos a asignar</h5>
+    <button type="button" class="close" aria-label="Close" (click)="closePermissionsModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="budget" scope="col">
+                  Asignar
+                </th>
+                <th class=" sort" data-sort="budget" scope="col">
+                  Nombre
+                </th>
+              </tr>
+            </thead>
+            <tbody class=" list">
+              <tr *ngFor="let permission of permissions;index as i">
+                <td class=" budget">
+                  <div class="custom-control custom-checkbox custom-checkbox-success">
+                    <input checked="checked" class="custom-control-input" for="chk-{{i}}" (change)="checkItem(permission)" type="checkbox" [checked]="checkboxes[i].checked"/>
+                    <label class=" custom-control-label" for="chk-{{i}}" (click)="toggleSelection($event, i)"></label>
+                  </div>
+                </td>
+                <td class=" budget">{{permission.name}}</td>            
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class=" modal-footer">
+        <button
+          class=" btn btn-primary new-event--add"
+          type="submit"
+          (click)="addPermissions()"
+          >Agregar
+        </button>
+        <button
+        (click)="closePermissionsModal()"
+        class=" btn btn-link ml-auto"
+        data-dismiss="modal"
+        type="button"
+        >
+        Cerrar
+      </button>
+    </div>
+</ng-template>
+
+<div class=" header pb-6">
+  <div class=" container-fluid">
+    <div class=" header-body">
+      <div class=" row align-items-center py-4">
+        <div class=" col-lg-12 col-12">
+          <h6 class=" h2 d-inline-block mb-0">Roles</h6>
+
+          <nav
+          aria-label="breadcrumb"
+          class=" d-none d-md-inline-block ml-md-4"
+          >
+          <ol class=" breadcrumb breadcrumb-links">
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> <i class=" ni ni-lock-circle-open "> </i> </a>
+            </li>
+
+            <li class=" breadcrumb-item">
+              <a href="javascript:void(0)"> Seguridad </a>
+            </li>
+
+            <li aria-current="page" class=" breadcrumb-item active">
+              Roles
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="container-fluid mt--6">
+
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center" style="margin-bottom: 10px;">
+            <div class=" col"><h3 class=" mb-0">Lista de roles</h3></div>
+
+            <div class="col text-right">
+              <button class="btn btn-sm btn-primary" (click)="open(form)">
+                Crear nuevo
+              </button>
+              <button class="btn btn-sm btn-primary" (click)="generateReport()">
+                Generar Reporte
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <input class="form-control" placeholder="Buscar rol..." [(ngModel)]="searchTable">
+            </div>
+          </div>
+        </div>
+        <div class=" table-responsive">
+          <table class=" table align-items-center table-flush">
+            <thead class=" thead-light">
+              <tr>
+                <th class=" sort" data-sort="name" scope="col" (click)="sortTableBy('name')">Nombre</th>
+
+                <th class=" sort" data-sort="budget" scope="col" (click)="sortTableBy('descriptions')">Descripción</th>
+
+                <th class=" sort" data-sort="budget" scope="col">Cantidad de permisos</th>
+
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+
+            <tbody class=" list">
+              <tr *ngFor="let rol of ( rols | filterRole: searchTable )  | paginate: { itemsPerPage: 5, currentPage: p } ">
+                
+              <td class=" budget">{{rol.name}}</td>
+              <td class=" budget">{{rol.descriptions}}</td>
+
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">
+                      <a href="javascript:void(0)" (click)="showRolePermissions(rol.role_permissions)">{{rol.role_permissions.length}}</a>
+                      </span>
+                    </div>
+                  </div>
+                </th>
+
+                    <td class=" text-right">
+                      <div dropdown class="dropdown no-caret">
+                        <a
+                        id="button-basic"
+                        dropdownToggle
+                        role="button"
+                        class="btn btn-sm btn-icon-only text-light dropdown-toggle"
+                        aria-controls="dropdown-basic"
+                        >
+                        <i class=" fas fa-ellipsis-v"> </i>
+                      </a>
+
+                      <div
+                      class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"
+                      style="position: relative;z-index:10;"
+                      *dropdownMenu
+                      >
+                      <button class="dropdown-item" (click)="edit(rol,form)">
+                        Editar
+                      </button>
+                      <button class="dropdown-item" (click)="delete(rol.id)">
+                        Eliminar
+                      </button>
+                      <button class="dropdown-item" (click)="assignPermission(rol.id,permisions)">
+                        Agregar permisos
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+        </table>
+        </div>
+          <div class="card-footer border-0">
+            <pagination-controls 
+        (pageChange)="p = $event" 
+        maxSize="5" 
+        responsive="true" 
+        previousLabel="Anterior"
+        nextLabel="Siguiente"></pagination-controls>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="rolePermissions.length>0">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header border-0">
+          <div class="row align-items-center">
+            <div class="col"><h3 class=" mb-0">Lista de permisos del rol: {{rol.name}}</h3></div>
+            <div class="col text-right">
+              <button class="btn btn-sm btn-default" (click)="closeRolePermissionsTable()">
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+          <div class="table-responsive" >
+            <table class=" table align-items-center table-flush">
+              <thead class=" thead-light">
+                <tr>
+                  <th class=" sort" data-sort="name" scope="col">Nombre</th>
+                  <th class=" sort" data-sort="budget" scope="col">Descripción</th>
+
+                </tr>
+              </thead>
+              <tbody class=" list">
+                <tr *ngFor="let rolePermission of rolePermissions">
+                  <td class=" budget">{{rolePermission.permission.name}}</td>
+                  <td class=" budget">{{rolePermission.permission.descriptions}}</td>                  
+                </tr>
+              </tbody>
+            </table>
+          </div> 
+
+      </div>
+    </div>
+  </div>
+</div>
